@@ -81,6 +81,14 @@ return packer.startup(function(use)
     -- Colorscheme
     use "gruvbox-community/gruvbox"
 
+    -- nvim-tree
+    use {
+        'kyazdani42/nvim-tree.lua',
+        requires = {
+            'kyazdani42/nvim-web-devicons', -- optional, for file icon
+        },
+    }
+
     -- Automatically set up your configuration after cloning packer.nvim !NOTE! Don't put plugins after this boi
     if PACKER_BOOTSTRAP then
         require("packer").sync()

@@ -7,5 +7,6 @@ require "alch.lsp"
 require "alch.telescope"
 require "alch.treesitter"
 require "alch.comment"
+require "alch.nvimtree"
 
 require('nvim-autopairs').setup{}
