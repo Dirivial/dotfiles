@@ -1,5 +1,5 @@
 # AwesomeWM dotfiles
 
-Check out
-https://github.com/lcpz/awesome-copycats
-https://github.com/lcpz/awesome-freedesktop
+Check out <br />
+https://github.com/lcpz/awesome-copycats <br />
+https://github.com/lcpz/awesome-freedesktop <br />
