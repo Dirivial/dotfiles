@@ -46,8 +46,7 @@ keymap("n", "<leader>fg", "<cmd>lua require'telescope.builtin'.live_grep()<cr>",
 keymap("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
 
 -- Insert --
--- Press jk fast to enter
-keymap("i", "jk", "<ESC>", opts)
+-- Nothing :)
 
 -- Visual --
 -- Stay in indent mode
