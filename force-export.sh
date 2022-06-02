@@ -4,6 +4,7 @@
 cp -r awesomeWM/* $HOME/.config/awesome/
 
 # Neovim
+cp nvim/init.lua $HOME/.config/nvim/init.lua
 cp -r nvim/lua/* $HOME/.config/nvim/lua/
 
 # Tmux
