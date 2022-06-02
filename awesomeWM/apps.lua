@@ -1,6 +1,6 @@
 return {
-  browser = "firedragon",
-  terminal = "alacritty",
-  filebrowser = "pcmanfm",
-  editor = "emacsclient -c -a 'emacs'",
+  browser = "falkon",
+  terminal = "kitty",
+  filebrowser = "pcmanfm-qt",
+  editor = "nvim",
 }

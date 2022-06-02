@@ -153,10 +153,6 @@ keys.global = mytable.join(
         end
     end, {description = "restore minimized", group = "client"}),
 
-    -- Dropdown application
-    awful.key({ modkey, }, "z", function () dropdown:toggle() end,
-              {description = "dropdown application", group = "launcher"}),
-
     -- Widgets popups
     awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
               {description = "show calendar", group = "widgets"}),
