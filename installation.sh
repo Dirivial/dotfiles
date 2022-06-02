@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo pacman -S awesome kitty neovim flameshot
+sudo pacman -S awesome kitty neovim flameshot brave rofi
 
 # AwesomeWM
 mkdir $HOME/.config/awesome
