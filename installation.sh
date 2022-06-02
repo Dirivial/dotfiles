@@ -16,3 +16,6 @@ cp .tmux.conf $HOME/.tmux.conf
 # Kitty
 mkdir $HOME/.config/kitty
 cp -r kitty/* $HOME/.config/kitty/
+
+git config --global user.name "Alchaize"
+git config --global user.email "Alch4ize@gmail.com"
