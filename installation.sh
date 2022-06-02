@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo pacman -S awesome kitty neovim flameshot
+
 # AwesomeWM
 mkdir $HOME/.config/awesome
 cp -r awesomeWM/* $HOME/.config/awesome/
@@ -12,6 +14,5 @@ cp -r nvim/lua/* $HOME/.config/nvim/lua/
 cp .tmux.conf $HOME/.tmux.conf
 
 # Kitty
-sudo pacman -S kitty
 mkdir $HOME/.config/kitty
 cp -r kitty/* $HOME/.config/kitty/
