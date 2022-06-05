@@ -221,7 +221,7 @@ keys.global = mytable.join(
     -- Language
     awful.key({ modkey }, "a", function() 
             awful.spawn(os.getenv("HOME") .. "/.config/awesome/scripts/keyb.sh")
-        end
+        end,
         {description = "Change keyboard layout", group = "scripts"}),
 
     -- Show rofi
