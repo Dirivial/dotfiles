@@ -58,20 +58,16 @@ return {
 
   -- Add titlebars to normal clients and dialogs
   { rule_any = { type = { "normal", "dialog" }
-  }, properties = { titlebars_enabled = false }
+  }, properties = { titlebars_enabled = true }
   },
 
   -- Very specific rules
-  { rule = { instance = "emacsclient" },
-    properties = { screen = 1, tag = tagnames[1] } },
   { rule = { instance = "discord" },
-    properties = { screen = 2, tag = tagnames[6] } },
-  { rule = { instance = "spotify" },
-    properties = { screen = 1, tag = tagnames[5] } },
-  { rule = { instance = "Steam" },
-    properties = { screen = 1, tag = tagnames[4] } },
-  { rule = { instance = "firefox" },
-    properties = { tag = tagnames[2] } },
+    properties = { screen = 2, tag = '1' } },
+  { rule_any = { class = {"Spotify", "spotify" }},
+    properties = { screen = 1, tag = '5' } },
+  { rule = { instance = "brave-browser" },
+    properties = { tag = '3' } },
   { rule = { class = "conky-semi" },
     properties = {
       floating = true,
