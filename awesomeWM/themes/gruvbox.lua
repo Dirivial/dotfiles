@@ -51,9 +51,6 @@ theme.confdir                                   = os.getenv("HOME") .. "/.config
 theme.wallpaper                                 = theme.confdir .. "/wallpapers/gruvbox/leaves.jpg"
 theme.font                                      = "FiraCode Nerd Font 14"
 
-theme.menu_bg_normal                            = theme.colors.bg0
-theme.menu_bg_focus                             = theme.colors.bg2
-
 theme.bg_normal                                 = theme.colors.bg0
 theme.bg_focus                                  = theme.colors.bg1
 theme.bg_urgent                                 = theme.colors.bg3
@@ -68,11 +65,17 @@ theme.border_normal                             = theme.colors.orange
 theme.border_focus                              = theme.colors.orange_h
 theme.border_marked                             = theme.colors.red
 
-theme.menu_border_width                         = 0
-theme.menu_width                                = dpi(200)
+theme.menu_border_width                         = dpi(2)
+theme.menu_border_color                         = theme.colors.orange_h
+
+theme.menu_width                                = dpi(250)
+theme.menu_height                               = dpi(25)
+
 theme.menu_submenu_icon                         = theme.confdir .. "/icons/submenu.png"
 theme.menu_fg_normal                            = theme.colors.fg1
-theme.menu_fg_focus                             = theme.colors.fg0
+theme.menu_fg_focus                             = theme.colors.bg0
+theme.menu_bg_normal                            = theme.colors.bg0
+theme.menu_bg_focus                             = theme.colors.orange
 theme.menu_icon                                 = theme.confdir .. "/icons/artix.png"
 
 theme.widget_temp                               = theme.confdir .. "/icons/temp.png"
@@ -98,9 +101,6 @@ theme.big_gap          = dpi(14)
 theme.negative_gap     = dpi(-6)
 theme.big_negative_gap = dpi(-10)
 theme.useless_gap      = dpi(5)
-
--- theme.taglist_squares_sel                       = theme.confdir .. "/icons/square_a.png"
--- theme.taglist_squares_unsel                     = theme.confdir .. "/icons/square_b.png"
 
 theme.tasklist_plain_task_name                  = true
 theme.tasklist_disable_icon                     = true

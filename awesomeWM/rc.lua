@@ -70,8 +70,6 @@ awful.spawn.with_shell(os.getenv("HOME") .. "/.config/awesome/scripts/autostart.
 local modkey     = "Mod4"
 local altkey     = "Mod1"
 local terminal   = apps.terminal
-local vi_focus   = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
-local cycle_prev = true -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
 local editor     = os.getenv("EDITOR") or "nvim"
 local browser    = apps.browser
 
@@ -150,7 +148,7 @@ local myawesomemenu = {
 
 awful.util.mymainmenu = freedesktop.menu.build {
   before = {
-    { "Awesome", myawesomemenu, beautiful.awesome_icon },
+    { "Awesome", myawesomemenu, beautiful.menu_icon },
     -- other triads can be put here
   },
   after = {
@@ -160,7 +158,7 @@ awful.util.mymainmenu = freedesktop.menu.build {
 }
 
 -- Hide the menu when the mouse leaves it
---[[
+--
 awful.util.mymainmenu.wibox:connect_signal("mouse::leave", function()
     if not awful.util.mymainmenu.active_child or
        (awful.util.mymainmenu.wibox ~= mouse.current_wibox and
@@ -175,7 +173,7 @@ awful.util.mymainmenu.wibox:connect_signal("mouse::leave", function()
         end)
     end
 end)
---]]
+--
 
 -- Set the Menubar terminal for applications that require it
 --menubar.utils.terminal = terminal

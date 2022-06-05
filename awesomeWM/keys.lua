@@ -4,7 +4,6 @@ local awful         = require("awful")
 local wibox         = require("wibox")
 local beautiful     = require("beautiful")
 local naughty       = require("naughty")
---local menubar       = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
                       require("awful.hotkeys_popup.keys")
 local mytable       = awful.util.table or gears.table -- 4.{0,1} compatibility
@@ -152,7 +151,7 @@ keys.global = mytable.join(
         end
     end, {description = "restore minimized", group = "client"}),
 
-    -- Widgets popups
+    -- Widgets popups, currently no effect
     awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
               {description = "show calendar", group = "widgets"}),
     awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,

@@ -17,3 +17,5 @@ cp -r .config/kitty/* dotfiles/kitty
 # Rofi 
 cp -r .config/rofi/* dotfiles/rofi
 
+# Conky
+cp -r .config/conky/* dotfiles/conky
