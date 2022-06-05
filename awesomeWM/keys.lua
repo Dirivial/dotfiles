@@ -185,18 +185,6 @@ keys.global = mytable.join(
             beautiful.volume.update()
         end,
         {description = "toggle mute", group = "hotkeys"}),
-    awful.key({ altkey, "Control" }, "m",
-        function ()
-            os.execute(string.format("amixer -q set %s 100%%", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume 100%", group = "hotkeys"}),
-    awful.key({ altkey, "Control" }, "0",
-        function ()
-            os.execute(string.format("amixer -q set %s 0%%", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume 0%", group = "hotkeys"}),
 
     -- MPD control
     awful.key({ altkey, "Control" }, "Up",
@@ -224,17 +212,21 @@ keys.global = mytable.join(
         end,
         {description = "mpc next", group = "widgets"}),
 
-    -- User programs
-    awful.key({ modkey }, "b", function () awful.spawn(apps.browser) end,
-              {description = "run browser", group = "launcher"}),
+    -- [[ User programs ]]
+    awful.key({ modkey }, "b", function () 
+            awful.spawn(apps.browser) 
+        end,
+        {description = "run browser", group = "launcher"}),
 
     -- Language
-    awful.key({ modkey }, "a", function() awful.spawn(os.getenv("HOME") .. "/.config/awesome/scripts/keyb.sh") end),
+    awful.key({ modkey }, "a", function() 
+            awful.spawn(os.getenv("HOME") .. "/.config/awesome/scripts/keyb.sh")
+        end
+        {description = "Change keyboard layout", group = "scripts"}),
 
     -- Show rofi
     awful.key({ modkey }, "p", function ()
-            os.execute(string.format("rofi -show %s",
-            'drun'))
+            os.execute(string.format("rofi -show %s", 'drun'))
         end,
         {description = "show rofi", group = "launcher"}),
     
@@ -243,26 +235,36 @@ keys.global = mytable.join(
             os.execute(string.format("rofi -show emoji -modi emoji"))
         end,
         {description = "show emoji selector", group = "launcher"}),
+    
+    -- Run Shutdown/Reboot/Lock script, uses rofi
+    awful.key({ modkey, altkey }, "p", function ()
+            awful.spawn(os.getenv("HOME") .. "/.config/awesome/scripts/powermenu.sh")
+        end,
+        {description = "Show powermenu", group = "scripts"}),
 
+    -- Show windows, uses rofi
     awful.key({ modkey, "Shift" }, "Tab", function ()
             os.execute(string.format("rofi -show %s",
             'window'))
         end,
         {description = "show rofi", group = "launcher"}),
-    -- Prompt
-    awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"})
+    -- Prompt
+    awful.key({ modkey }, "r", function () 
+            awful.screen.focused().mypromptbox:run()
+        end,
+        {description = "run prompt", group = "launcher"}),
+
+    awful.key({ modkey, altkey }, "x",
+        function ()
+            awful.prompt.run {
+                prompt       = "Run Lua code: ",
+                textbox      = awful.screen.focused().mypromptbox.widget,
+                exe_callback = awful.util.eval,
+                history_path = awful.util.get_cache_dir() .. "/history_eval"
+            }
+        end,
+        {description = "lua execute prompt", group = "awesome"})
     --]]
 )
 
@@ -274,35 +276,50 @@ keys.client = mytable.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey,   }, "q",      function (c) c:kill()                         end,
-              {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
-              {description = "toggle floating", group = "client"}),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
-              {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
-              {description = "move to screen", group = "client"}),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
-              {description = "toggle keep on top", group = "client"}),
-    awful.key({ modkey,           }, "n",
+
+    awful.key({ modkey,   }, "q", function (c) 
+            c:kill()
+        end,
+        {description = "close", group = "client"}),
+
+    awful.key({ modkey, "Control" }, "space",  
+        awful.client.floating.toggle,
+        {description = "toggle floating", group = "client"}),
+
+    awful.key({ modkey, "Control" }, "Return", function (c)
+        c:swap(awful.client.getmaster()) end,
+        {description = "move to master", group = "client"}),
+
+    awful.key({ modkey,}, "o", function (c) 
+        c:move_to_screen() end,
+        {description = "move to screen", group = "client"}),
+
+    awful.key({ modkey,}, "t",function (c)
+        c.ontop = not c.ontop end,
+        {description = "toggle keep on top", group = "client"}),
+    
+    awful.key({ modkey,}, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
             c.minimized = true
         end ,
         {description = "minimize", group = "client"}),
+
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized = not c.maximized
             c:raise()
         end ,
         {description = "(un)maximize", group = "client"}),
+
     awful.key({ modkey, "Control" }, "m",
         function (c)
             c.maximized_vertical = not c.maximized_vertical
             c:raise()
         end ,
         {description = "(un)maximize vertically", group = "client"}),
+
     awful.key({ modkey, "Shift"   }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal

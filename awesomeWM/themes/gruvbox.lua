@@ -261,7 +261,7 @@ function theme.at_screen_connect(s)
                     bottom = 2,
                     widget = wibox.container.margin,
                 },
-                bg = theme.colors.bg1,
+                bg = theme.colors.bg2,
                 shape = shapes.potamides.rightangled_left,
                 widget = wibox.container.background,
             },
