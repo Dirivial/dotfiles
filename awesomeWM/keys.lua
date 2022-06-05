@@ -21,12 +21,11 @@ keys.global = mytable.join(
     awful.key({ "Control",           }, "space", function() naughty.destroy_all_notifications() end,
               {description = "destroy all notifications", group = "hotkeys"}),
     -- Take a screenshot
-    -- https://github.com/lcpz/dots/blob/master/bin/screenshot
-    awful.key({ altkey }, "p", function() os.execute("screenshot") end,
+    awful.key({ altkey }, "p", function() os.execute("flameshot gui") end,
               {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
-    awful.key({ altkey, "Control" }, "l", function () os.execute("slock") end,
+    awful.key({ altkey, "Control" }, "l", function () os.execute("xlock -size 50 -count 100 -mode swarm") end,
               {description = "lock screen", group = "hotkeys"}),
 
     -- Show help
