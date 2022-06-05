@@ -14,5 +14,6 @@ cp -r .tmux.conf dotfiles/.tmux.conf
 # Kitty
 cp -r .config/kitty/* dotfiles/kitty
 
-# 
+# Rofi 
+cp -r .config/rofi/* dotfiles/rofi
 
