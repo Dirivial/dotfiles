@@ -1,6 +1,6 @@
 return {
   browser = "brave",
-  terminal = "kitty",
+  terminal = "kitty --title ' Kitty  '",
   filebrowser = "pcmanfm-qt",
   editor = "nvim",
 }

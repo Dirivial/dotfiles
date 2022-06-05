@@ -11,37 +11,40 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme                                     = {}
 
 theme.colors = {}
-theme.colors.bg0   = "#282828"
-theme.colors.bg1   = "#3c3836"
-theme.colors.bg2   = "#504945"
-theme.colors.bg3   = "#665c54"
-theme.colors.bg4   = "#7c6f64"
+theme.colors.bg0      = "#282828"
+theme.colors.bg1      = "#3c3836"
+theme.colors.bg2      = "#504945"
+theme.colors.bg3      = "#665c54"
+theme.colors.bg4      = "#7c6f64"
 
-theme.colors.gray   = "#928374"
-theme.colors.gray_h  = "#a89984"
+theme.colors.gray     = "#928374"
+theme.colors.gray_h   = "#a89984"
 
-theme.colors.fg0     = "#839496"
-theme.colors.fg1     = "#93a1a1"
-theme.colors.fg2     = "#eee8d5"
-theme.colors.fg3     = "#fdf6e3"
-theme.colors.fg4     = "#fdf6e3"
+theme.colors.fg0      = "#839496"
+theme.colors.fg1      = "#93a1a1"
+theme.colors.fg2      = "#eee8d5"
+theme.colors.fg3      = "#fdf6e3"
+theme.colors.fg4      = "#fdf6e3"
 
-theme.colors.yellow  = "#d79921"
+theme.colors.yellow   = "#d79921"
 theme.colors.yellow_h = "#fabd2f"
 
-theme.colors.orange  = "#d65d0e"
+theme.colors.orange   = "#d65d0e"
 theme.colors.orange_h = "#fe8019"
 
-theme.colors.red     = "#cc241d"
-theme.colors.red_h     = "#fb4934"
+theme.colors.red      = "#cc241d"
+theme.colors.red_h    = "#fb4934"
 
-theme.colors.purple = "#b16286"
+theme.colors.green    = "#98971a"
+theme.colors.green_h  = "#b8bb26"
+
+theme.colors.purple   = "#b16286"
 theme.colors.purple_h = "#d3869b"
 
-theme.colors.blue    = "#458588"
-theme.colors.blue_h    = "#83a598"
+theme.colors.blue     = "#458588"
+theme.colors.blue_h   = "#83a598"
 
-theme.colors.aqua   = "#689d6a"
+theme.colors.aqua     = "#689d6a"
 theme.colors.aqua_h   = "#8ec07c"
 
 theme.confdir                                   = os.getenv("HOME") .. "/.config/awesome/themes/"
@@ -61,8 +64,8 @@ theme.fg_urgent                                 = theme.colors.orange
 theme.fg_minimize                               = theme.colors.fg4
 
 theme.border_width                              = dpi(1)
-theme.border_normal                             = theme.colors.fg0
-theme.border_focus                              = theme.colors.fg4
+theme.border_normal                             = theme.colors.orange
+theme.border_focus                              = theme.colors.orange_h
 theme.border_marked                             = theme.colors.red
 
 theme.menu_border_width                         = 0
@@ -107,7 +110,7 @@ theme.tasklist_bg_focus                         = theme.bg_normal
 theme.tasklist_bg_urgent                        = theme.bg_normal
 
 theme.tasklist_fg_normal                        = theme.fg_normal
-theme.tasklist_fg_focus                         = theme.fg_normal
+theme.tasklist_fg_focus                         = theme.colors.orange
 theme.tasklist_fg_urgent                        = theme.fg_normal
 
 
@@ -159,7 +162,10 @@ theme.bg_systray = theme.colors.bg1
 -- Taglist setting
 theme.taglist_bg_empty    = theme.colors.bg1
 theme.taglist_bg_occupied = theme.colors.bg3
-theme.taglist_bg_focus    = theme.colors.red
+theme.taglist_bg_focus    = theme.colors.orange
+theme.taglist_fg_occupied = theme.colors.fg4
+theme.taglist_fg_focus    = theme.colors.bg1
+
 
 theme.taglist_font  = "FiraCode Nerd Font 14"
 awful.util.tagnames = { "1", "2", "3", "4", "5", "6" }
@@ -285,13 +291,15 @@ function theme.at_screen_connect(s)
                     right = theme.big_gap,
                     widget = wibox.container.margin,
                 },
-                bg = theme.colors.bg1,
+                bg = theme.colors.bg2,
+                fg = theme.colors.fg3,
                 shape = shapes.potamides.paralellogram_right,
                 widget = wibox.container.background,
             },
             {
                 mytextclock,
                 bg = theme.colors.bg1,
+                fg = theme.colors.fg2,
                 shape = shapes.potamides.paralellogram_right,
                 widget = wibox.container.background,
             },
@@ -304,7 +312,7 @@ function theme.at_screen_connect(s)
                     bottom = 1,
                     widget = wibox.container.margin,
                 },
-                bg = theme.colors.bg1,
+                bg = theme.colors.bg2,
                 shape = shapes.potamides.rightangled_right,
                 widget = wibox.container.background,
             },

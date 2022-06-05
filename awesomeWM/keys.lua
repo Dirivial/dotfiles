@@ -231,11 +231,18 @@ keys.global = mytable.join(
     -- Language
     awful.key({ modkey }, "a", function() awful.spawn(os.getenv("HOME") .. "/.config/awesome/scripts/keyb.sh") end),
 
+    -- Show rofi
     awful.key({ modkey }, "p", function ()
             os.execute(string.format("rofi -show %s",
-            'run'))
+            'drun'))
         end,
         {description = "show rofi", group = "launcher"}),
+    
+    -- Emoji selector, uses rofi
+    awful.key({ modkey, "Control" }, "p", function ()
+            os.execute(string.format("rofi -show emoji -modi emoji"))
+        end,
+        {description = "show emoji selector", group = "launcher"}),
 
     awful.key({ modkey, "Shift" }, "Tab", function ()
             os.execute(string.format("rofi -show %s",
