@@ -3,6 +3,8 @@ local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
 
+local shapes = require("themes/shapes")
+
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
@@ -64,7 +66,7 @@ theme.border_focus                              = theme.colors.fg4
 theme.border_marked                             = theme.colors.red
 
 theme.menu_border_width                         = 0
-theme.menu_width                                = dpi(130)
+theme.menu_width                                = dpi(200)
 theme.menu_submenu_icon                         = theme.confdir .. "/icons/submenu.png"
 theme.menu_fg_normal                            = theme.colors.fg1
 theme.menu_fg_focus                             = theme.colors.fg0
@@ -92,7 +94,7 @@ theme.gap              = dpi(4)
 theme.big_gap          = dpi(14)
 theme.negative_gap     = dpi(-6)
 theme.big_negative_gap = dpi(-10)
-theme.useless_gap      = 3
+theme.useless_gap      = dpi(5)
 
 -- theme.taglist_squares_sel                       = theme.confdir .. "/icons/square_a.png"
 -- theme.taglist_squares_unsel                     = theme.confdir .. "/icons/square_b.png"
@@ -155,71 +157,12 @@ theme.notification_max_width = dpi(450)
 theme.bg_systray = theme.colors.bg1
 
 -- Taglist setting
-theme.taglist_bg_empty = theme.colors.bg1
+theme.taglist_bg_empty    = theme.colors.bg1
 theme.taglist_bg_occupied = theme.colors.bg3
-theme.taglist_bg_focus = theme.colors.red
+theme.taglist_bg_focus    = theme.colors.red
 
-theme.taglist_font                              = "FiraCode Nerd Font 14"
+theme.taglist_font  = "FiraCode Nerd Font 14"
 awful.util.tagnames = { "1", "2", "3", "4", "5", "6" }
-
--- Shapes, move to another file later
-local left_parallelogram = function(cr, width, height, degree)
-    degree = degree or 10
-    cr:move_to(0, 0)
-    cr:line_to(width - degree, 0)
-    cr:line_to(width, height)
-    cr:line_to(degree, height)
-    cr:close_path()
-end
-
-local right_parallelogram = function(cr, width, height, degree)
-    degree = degree or 10
-    cr:move_to(degree, 0)
-    cr:line_to(width, 0)
-    cr:line_to(width - degree, height)
-    cr:line_to(0, height)
-    cr:close_path()
-end
-
-local rightangled_right = function(cr, width, height, degree)
-  degree = degree or 10
-  cr:move_to(degree, 0)
-  cr:line_to(width, 0)
-  cr:line_to(width, height)
-  cr:line_to(0, height)
-  cr:close_path()
-end
-
-local rightangled_left = function(cr, width, height, degree)
-  degree = degree or 10
-  cr:move_to(0, 0)
-  cr:line_to(width - degree, 0)
-  cr:line_to(width, height)
-  cr:line_to(0, height)
-  cr:close_path()
-end
-
-
--- Check if I still use this anywhere
-local build_widget = function(widget)
-  return wibox.widget {
-    {
-      widget,
-      border_width = dpi(2),
-          border_color = theme.color.orange,
-      bg = beautiful.transparent,
-      shape = function(cr, w, h)
-        gears.shape.rounded_rect(cr, w, h, dpi(12))
-      end,
-      widget = wibox.container.background
-    },
-    top = dpi(9),
-    bottom = dpi(9),
-    widget = wibox.container.margin
-  }
-end
-
-
 
 -- Widgets
 
@@ -230,8 +173,6 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 os.setlocale(os.getenv("LANG")) -- to localize the clock
 local mytextclock = wibox.widget.textclock()
 mytextclock.font = theme.font
-
-
 
 local widget_template = {
   {
@@ -251,32 +192,7 @@ local widget_template = {
 local mylauncher = awful.widget.button({ image = theme.menu_icon })
 mylauncher:connect_signal("button::press", function() awful.util.mymainmenu:toggle() end)
 
--- Weird ass function
-local compose_widget = function(args)
-    local widgets = {
-        spacing = theme.big_negative_gap,
-        layout = wibox.layout.fixed.horizontal
-    }
-
-    for _, w in ipairs(args) do
-        table.insert(widgets, {
-            {
-                w[1],
-                top = w.margin or nil,
-                bottom = w.margin or nil,
-                left = w.shape == shape.rightangled.left and theme.gap or theme.big_gap,
-                right = w.shape == shape.rightangled.right and theme.gap or theme.big_gap,
-                widget = wibox.container.margin
-            },
-            shape = w.shape,
-            bg = w.color,
-            widget = wibox.container.background
-        })
-    end
-
-    return #widgets == 1 and widgets[1] or widgets
-end
-
+-- The sauce
 function theme.at_screen_connect(s)
     -- Wallpaper
     local wallpaper = theme.wallpaper
@@ -304,10 +220,10 @@ function theme.at_screen_connect(s)
     s.mytaglist = awful.widget.taglist {
         screen = s,
         style = {
-            shape = left_parallelogram
+            shape = shapes.potamides.paralellogram_left,
         }, 
         layout = {
-            spacing = -dpi(6),
+            spacing = theme.negative_gap,
             layout = wibox.layout.grid.horizontal
         },
         widget_template = widget_template,
@@ -333,14 +249,14 @@ function theme.at_screen_connect(s)
             {
                 {
                     mylauncher,
-                    left = 5,
-                    right = 10,
+                    left = theme.gap,
+                    right = theme.big_gap,
                     top = 2,
                     bottom = 2,
                     widget = wibox.container.margin,
                 },
                 bg = theme.colors.bg1,
-                shape = rightangled_left,
+                shape = shapes.potamides.rightangled_left,
                 widget = wibox.container.background,
             },
             s.mytaglist,
@@ -352,46 +268,48 @@ function theme.at_screen_connect(s)
             {
                 {
                     wibox.widget.systray(),
-                    left = 12,
+                    left = theme.big_gap,
                     right = 10,
                     top = 0,
                     bottom = 0,
                     widget = wibox.container.margin,
                 },
                 bg = theme.colors.bg1,
-                shape = right_parallelogram,
+                shape = shapes.potamides.paralellogram_right,
                 widget = wibox.container.background,
             },
             {
                 {
                     mykeyboardlayout,
-                    left = 8,
-                    right = 10,
+                    left = theme.big_gap,
+                    right = theme.big_gap,
                     widget = wibox.container.margin,
                 },
                 bg = theme.colors.bg1,
-                shape = right_parallelogram,
+                shape = shapes.potamides.paralellogram_right,
                 widget = wibox.container.background,
             },
             {
                 mytextclock,
                 bg = theme.colors.bg1,
-                shape = right_parallelogram,
+                shape = shapes.potamides.paralellogram_right,
                 widget = wibox.container.background,
             },
             {
                 {
                     s.mylayoutbox,
-                    left = 15,
-                    right = 10,
+                    left = theme.big_gap,
+                    right = theme.gap,
+                    up = 1,
+                    bottom = 1,
                     widget = wibox.container.margin,
                 },
                 bg = theme.colors.bg1,
-                shape = rightangled_right,
+                shape = shapes.potamides.rightangled_right,
                 widget = wibox.container.background,
             },
             layout = wibox.layout.fixed.horizontal,
-            spacing = -dpi(6),
+            spacing = theme.negative_gap,
         },
 
     }
