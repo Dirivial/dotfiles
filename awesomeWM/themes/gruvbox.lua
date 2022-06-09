@@ -168,7 +168,7 @@ theme.taglist_fg_focus    = theme.colors.bg1
 
 
 theme.taglist_font  = "FiraCode Nerd Font 14"
-awful.util.tagnames = { "1", "2", "3", "4", "5", "6" }
+awful.util.tagnames = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
 
 -- Widgets
 
@@ -269,7 +269,14 @@ function theme.at_screen_connect(s)
             s.mypromptbox,
             layout = wibox.layout.fixed.horizontal,
         },
-        s.mytasklist,-- Middle widget 
+        {
+            {
+                s.mytasklist,
+                width = dpi(1000),
+                widget = wibox.container.constraint,
+            },
+            layout = wibox.layout.fixed.horizontal,
+        },
         { -- Right
             {
                 {

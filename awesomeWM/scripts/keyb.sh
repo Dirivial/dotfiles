@@ -6,5 +6,5 @@ if [ "$IS_US_LAYOUT" -eq 0 ];
 then
 	setxkbmap se
 else
-    setxkbmap us altgr-intl
+    setxkbmap -layout us -variant altgr-intl
 fi
