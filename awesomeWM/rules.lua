@@ -8,8 +8,6 @@ local naughty       = require("naughty")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 
-local tagnames = { "", "", "", "", "", "" }
-
 return {
   -- All clients will match this rule.
   { rule = {},
@@ -67,13 +65,11 @@ return {
   { rule_any = { class = {"Spotify", "spotify" }},
     properties = { screen = 1, tag = '5' } },
   { rule = { instance = "brave-browser" },
-    properties = { tag = '3' } },
+    properties = { screen = 1, tag = '3' } },
   { rule = { class = "conky-semi" },
     properties = {
       floating = true,
       screen = 1
     }
   },
-  { rule = { instance = "pavucontrol" },
-    properties = { screen = 1, tag = tagnames[0] } },
 }
