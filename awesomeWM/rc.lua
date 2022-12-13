@@ -131,7 +131,7 @@ awful.util.tasklist_buttons = mytable.join(
   awful.button({}, 5, function() awful.client.focus.byidx(-1) end)
 )
 
-beautiful.init(string.format("%s/.config/awesome/themes/gruvbox.lua", os.getenv("HOME")))
+beautiful.init(string.format("%s/.config/awesome/themes/catppuccin.lua", os.getenv("HOME")))
 
 -- }}}
 

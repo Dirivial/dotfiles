@@ -22,7 +22,7 @@ picom --config $HOME/.config/awesome/scripts/picom.conf &
 #/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 dunst &
 #feh --randomize --bg-fill /usr/share/wallpapers/garuda-wallpapers/*
-feh --bg-fill $HOME/.config/awesome/themes/wallpapers/gruvbox/skull_gruvboxified.jpg --bg-fill $HOME/.config/awesome/themes/wallpapers/gruvbox/houses.jpg
+feh --bg-fill $HOME/.config/awesome/themes/wallpapers/catppuccin/catppuccin_triangle.png --bg-fill $HOME/.config/awesome/themes/wallpapers/catppuccin/waves.png
 #starting user applications at boot time
 #run caffeine -a &
 #run vivaldi-stable &
@@ -31,5 +31,6 @@ conky -d
 run brave &
 run spotify &
 run discord &
+run obsidian &
 
 #run telegram-desktop &

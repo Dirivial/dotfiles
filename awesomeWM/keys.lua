@@ -166,6 +166,7 @@ keys.global = mytable.join(
               {description = "-10%", group = "hotkeys"}),
 
     -- ALSA volume control
+    --[[
     awful.key({ altkey }, "Up",
         function ()
             os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
@@ -184,6 +185,7 @@ keys.global = mytable.join(
             beautiful.volume.update()
         end,
         {description = "toggle mute", group = "hotkeys"}),
+    ]]--
 
     -- MPD control
     awful.key({ altkey, "Control" }, "Up",

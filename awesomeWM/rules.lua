@@ -66,6 +66,8 @@ return {
     properties = { screen = 1, tag = '5' } },
   { rule = { instance = "brave-browser" },
     properties = { screen = 1, tag = '3' } },
+  { rule = { instance = "obsidian" }, 
+    properties = { screen = 1, tag = '9' } },
   { rule = { class = "conky-semi" },
     properties = {
       floating = true,
