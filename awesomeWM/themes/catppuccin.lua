@@ -13,8 +13,8 @@ local theme = {}
 theme.colors     = {}
 theme.colors.bg0 = "#11111B"
 theme.colors.bg1 = "#1E1E2E"
-theme.colors.bg2 = "#45475A"
-theme.colors.bg3 = "#313244"
+theme.colors.bg2 = "#313244"
+theme.colors.bg3 = "#45475A"
 
 theme.colors.gray   = "#928374"
 theme.colors.gray_h = "#a89984"
@@ -42,7 +42,7 @@ theme.colors.blue = "#458588"
 theme.colors.aqua = "#89B4FA"
 
 theme.confdir   = os.getenv("HOME") .. "/.config/awesome/themes/"
-theme.wallpaper = theme.confdir .. "/wallpapers/gruvbox/skull-catppuccin.jpg"
+theme.wallpaper = theme.confdir .. "/wallpapers/catppuccin/catppuccin-triangles.png"
 theme.font      = "FiraCode Nerd Font 14"
 
 theme.bg_normal = theme.colors.bg0
