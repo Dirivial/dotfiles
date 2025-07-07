@@ -1,0 +1,136 @@
+@define-color rosewater rgb(245, 224, 220);
+@define-color flamingo rgb(242, 205, 205);
+@define-color pink rgb(245, 194, 231);
+@define-color mauve rgb(203, 166, 247);
+@define-color red rgb(243, 139, 168);
+@define-color maroon rgb(235, 160, 172);
+@define-color peach rgb(250, 179, 135);
+@define-color yellow rgb(249, 226, 175);
+@define-color green rgb(166, 227, 161);
+@define-color teal rgb(148, 226, 213);
+@define-color sky rgb(137, 220, 235);
+@define-color sapphire rgb(116, 199, 236);
+@define-color blue rgb(137, 180, 250);
+@define-color lavender rgb(180, 190, 254);
+@define-color text rgb(205, 214, 244);
+@define-color subtext1 rgb(186, 194, 222);
+@define-color subtext0 rgb(166, 173, 200);
+@define-color overlay2 rgb(147, 153, 178);
+@define-color overlay1 rgb(127, 132, 156);
+@define-color overlay0 rgb(108, 112, 134);
+@define-color surface2 rgb(88, 91, 112);
+@define-color surface1 rgb(69, 71, 90);
+@define-color surface0 rgb(49, 50, 68);
+@define-color base rgb(30, 30, 46);
+@define-color mantle rgb(24, 24, 37);
+@define-color crust rgb(17, 17, 27);
+
+
+
+* {
+    border: none;
+    font-size: 16px;
+    font-family: "Iosevka Nerd Font" ;
+    min-height: 25px;
+}
+
+window#waybar {
+  background: transparent;
+  margin: 5px;
+}
+
+#custom-logo {
+  padding: 0 15px;
+}
+
+.modules-right {
+  padding-left: 5px;
+  border-radius: 15px 0 0 15px;
+  margin-top: 2px;
+  background: alpha(@crust, 1);
+  color: alpha(@text, 1);
+}
+
+.modules-center {
+  padding: 0 15px;
+  margin-top: 2px;
+  border-radius: 15px 15px 15px 15px;
+  background: alpha(@crust, 1);
+}
+
+.modules-left {
+  border-radius: 0 15px 15px 0;
+  margin-top: 2px;
+  padding-right: 10px;
+  background: alpha(@crust, 1);
+  color: alpha(@text, 1);
+}
+
+#battery,
+#custom-clipboard,
+#custom-colorpicker,
+#custom-powerDraw,
+#bluetooth,
+#pulseaudio,
+#network,
+#disk,
+#memory,
+#backlight,
+#cpu,
+#temperature,
+#custom-weather,
+#idle_inhibitor,
+#jack,
+#tray,
+#window,
+#workspaces,
+#clock {
+  padding: 0 5px;
+  color: alpha(@text, 1);
+}
+
+#pulseaudio {
+  padding-top: 3px;
+  padding-right: 10px;
+}
+
+#temperature.critical,
+#pulseaudio.muted {
+  color: #FF0000;
+  padding-top: 0;
+}
+
+#battery.charging {
+    color: #ffffff;
+    background-color: #26A65B;
+}
+
+#battery.warning:not(.charging) {
+    background-color: #ffbe61;
+    color: black;
+}
+
+#battery.critical:not(.charging) {
+    background-color: #f53c3c;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+tooltip {
+    background-color: alpha(@base, 1); /* Example background */
+    border: 1px solid alpha(@pink, 1); /* Example border */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
+}
+
