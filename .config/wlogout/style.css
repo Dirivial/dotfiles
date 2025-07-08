@@ -1,17 +1,41 @@
-@define-color background rgba(13, 12, 11, 1);
-@define-color bg rgba(217, 30, 24, 1);
+@define-color rosewater rgb(245, 224, 220);
+@define-color flamingo rgb(242, 205, 205);
+@define-color pink rgb(245, 194, 231);
+@define-color mauve rgb(203, 166, 247);
+@define-color red rgb(243, 139, 168);
+@define-color maroon rgb(235, 160, 172);
+@define-color peach rgb(250, 179, 135);
+@define-color yellow rgb(249, 226, 175);
+@define-color green rgb(166, 227, 161);
+@define-color teal rgb(148, 226, 213);
+@define-color sky rgb(137, 220, 235);
+@define-color sapphire rgb(116, 199, 236);
+@define-color blue rgb(137, 180, 250);
+@define-color lavender rgb(180, 190, 254);
+@define-color text rgb(205, 214, 244);
+@define-color subtext1 rgb(186, 194, 222);
+@define-color subtext0 rgb(166, 173, 200);
+@define-color overlay2 rgb(147, 153, 178);
+@define-color overlay1 rgb(127, 132, 156);
+@define-color overlay0 rgb(108, 112, 134);
+@define-color surface2 rgb(88, 91, 112);
+@define-color surface1 rgb(69, 71, 90);
+@define-color surface0 rgb(49, 50, 68);
+@define-color base rgb(30, 30, 46);
+@define-color mantle rgb(24, 24, 37);
+@define-color crust rgb(17, 17, 27);
 
 * {
     all: unset;
     background-image: none;
     margin: unset;
     padding: unset;
-    transition: 200ms cubic-bezier(0, 0, 1, 1);
+    transition: 100ms cubic-bezier(0, 0, 1, 1);
 }
 
 button {
     font-family: 'Iosevka Nerd Font Mono';
-    background-color: alpha(@background, 1);
+    background-color: alpha(@base, 1);
     border-radius: 5px;
     background-repeat: no-repeat;
     background-position: center;
@@ -19,45 +43,45 @@ button {
 
 #lock {
     background-image: image(url("../../.config/wlogout/lock.png"));
-    margin : 5px 5px 5px 300px;
+    margin : 5px 5px 5px 5px;
     padding: 5px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
 #shutdown {
     background-image: image(url("../../.config/wlogout/power.png"));
-    margin : 5px 300px 5px 5px;
+    margin : 5px 5px 5px 5px;
     padding: 5px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
 #logout {
     background-image: image(url("../../.config/wlogout/logout.png"));
-    margin : 5px 300px 5px 5px;
+    margin : 5px 5px 5px 5px;
     padding: 5px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
 #reboot {
 
     background-image: image(url("../../.config/wlogout/restart.png"));
-    margin : 5px 5px 5px 300px;
+    margin : 5px 5px 5px 5px;
     padding: 5px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
 
 #lock:focus {
-    margin : 5px 5px 5px 200px;
+    margin : 5px 5px 5px 5px;
 }
 
 #shutdown:focus {
-    margin : 5px 200px 5px 5px;
+    margin : 5px 5px 5px 5px;
 }
 #logout:focus {
-    margin : 5px 200px 5px 5px;
+    margin : 5px 5px 5px 5px;
 }
 #reboot:focus {
-    margin : 5px 5px 5px 200px;
+    margin : 5px 5px 5px 5px;
 }
 button:focus{
-    background-color: alpha(@bg,1);
+    background-color: alpha(@red,1);
     color: #000000;
     background-position:center;
 }

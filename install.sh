@@ -60,6 +60,9 @@ DOTFILES=(
   ".config/hypr/hyprlock/check-capslock.sh"
   ".config/hypr/hyprlock/status.sh"
 
+  ".config/hypr/hyprpaper/WavesDark.jpg"
+  ".config/hypr/hyprpaper/Cloudsnight.jpg"
+
   # Personal scripts in ~/.local/bin
   # ".local/bin/myscript.sh"
   # ".local/bin/anotherscript.py"
