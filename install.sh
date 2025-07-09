@@ -60,12 +60,14 @@ DOTFILES=(
   ".config/hypr/hyprlock/check-capslock.sh"
   ".config/hypr/hyprlock/status.sh"
 
-  ".config/hypr/hyprpaper/WavesDark.jpg"
-  ".config/hypr/hyprpaper/Cloudsnight.jpg"
-
   # Personal scripts in ~/.local/bin
   # ".local/bin/myscript.sh"
   # ".local/bin/anotherscript.py"
+)
+
+DOTFILES_COPY=(
+  ".config/hypr/hyprpaper/WavesDark.jpg"
+  ".config/hypr/hyprpaper/Cloudsnight.jpg"
 )
 
 # --- Functions ---
@@ -88,6 +90,26 @@ create_file_symlink() {
   # Create the symbolic link
   echo "  - Linking $source_path to $target_path"
   ln -s "$DOTFILES_DIR/$source_path" "$target_path"
+}
+
+# Function to copy a file
+copy_file() {
+  local source_path="$1" # Path relative to DOTFILES_DIR (e.g., ".config/nvim/init.lua")
+  local target_path="$2" # Full path in TARGET_DIR (e.g., "/home/user/.config/nvim/init.lua")
+
+  # Ensure the parent directory for the target symlink exists in the home directory
+  # If target_path is /home/user/.config/nvim/init.lua, this creates /home/user/.config/nvim/
+  mkdir -p "$(dirname "$target_path")"
+
+  # Check if the target already exists (is a file or a symlink)
+  if [ -e "$target_path" ] || [ -L "$target_path" ]; then
+    echo "  - $target_path already exists. Backing up to ${target_path}.bak"
+    mv "$target_path" "${target_path}.bak"
+  fi
+
+  # Copy the files
+  echo "  - Copying $source_path to $target_path"
+  cp "$DOTFILES_COPY_DIR/$source_path" "$target_path"
 }
 
 # --- Main Script Logic ---
@@ -115,6 +137,22 @@ for dotfile in "${DOTFILES[@]}"; do
   fi
 
   create_file_symlink "$dotfile" "$TARGET_FILE"
+done
+
+# Loop through the list of dotfiles to copy and copy them
+for dotfile in "${DOTFILES_COPY[@]}"; do
+  # Construct the full source path in the dotfiles repository
+  SOURCE_FILE="$DOTFILES_DIR/$dotfile"
+  # Construct the full target path in the home directory
+  TARGET_FILE="$TARGET_DIR/$dotfile"
+
+  # Check if the source file actually exists in the dotfiles repo
+  if [ ! -e "$SOURCE_FILE" ]; then
+    echo "Warning: Source file '$SOURCE_FILE' not found in dotfiles repository. Skipping."
+    continue
+  fi
+
+  copy_file "$dotfile" "$TARGET_FILE"
 done
 
 echo "Dotfiles setup complete!"
