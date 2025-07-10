@@ -45,7 +45,8 @@
 
 window {
     all:unset;
-    border-radius: 10px;
+    border: 2px solid @surface1;
+    border-radius: 0px;
     background-color: alpha(@mantle,.99);
 }
 
@@ -72,7 +73,8 @@ window {
     border: none;
     outline: none;
     color: @text;
-    border-radius:10px;
+    border: 2px solid @surface0;
+    border-radius:0px;
     background-color: alpha(@base, 1);
 }
 #input image {
@@ -113,7 +115,8 @@ window {
 #entry:selected {
     box-shadow: 1px 1px 5px rgba(5,4,4, .25);
     border: none;
-    border-radius: 10px;
+    border: 2px solid @surface0;
+    border-radius: 0px;
     background-color: @base;
 }
 #entry:selected #text {
