@@ -70,9 +70,9 @@ DOTFILES=(
 
 DOTFILES_COPY=(
   ".config/hypr/hyprpaper/Cloudsnight.jpg"
-  ".config/hypr/hyprpaper/dark-forest-village.jpg"
-  ".config/hypr/hyprpaper/pixel-car.jpg"
-  ".config/hypr/hyprpaper/pixel-planet.jpg"
+  ".config/hypr/hyprpaper/dark-forest-village.png"
+  ".config/hypr/hyprpaper/pixel-car.png"
+  ".config/hypr/hyprpaper/pixel-planet.png"
   ".config/hypr/hyprpaper/WavesDark.jpg"
 )
 
