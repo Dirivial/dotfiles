@@ -21,6 +21,9 @@ DOTFILES=(
   ".config/alacritty/alacritty.toml"
   ".config/alacritty/colors.toml"
 
+  # Dunst
+  ".config/dunst/dunstrc"
+
   # Wofi configuration
   ".config/wofi/config"
   ".config/wofi/style.css"
@@ -66,8 +69,11 @@ DOTFILES=(
 )
 
 DOTFILES_COPY=(
-  ".config/hypr/hyprpaper/WavesDark.jpg"
   ".config/hypr/hyprpaper/Cloudsnight.jpg"
+  ".config/hypr/hyprpaper/dark-forest-village.jpg"
+  ".config/hypr/hyprpaper/pixel-car.jpg"
+  ".config/hypr/hyprpaper/pixel-planet.jpg"
+  ".config/hypr/hyprpaper/WavesDark.jpg"
 )
 
 # --- Functions ---
