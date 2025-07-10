@@ -31,12 +31,12 @@
     border: none;
     font-size: 16px;
     font-family: "Iosevka Nerd Font" ;
-    min-height: 25px;
+    min-height: 30px;
 }
 
 window#waybar {
   background: transparent;
-  margin: 5px;
+  margin: 0px;
 }
 
 #custom-logo {
@@ -45,22 +45,28 @@ window#waybar {
 
 .modules-right {
   padding-left: 5px;
-  border-radius: 15px 0 0 15px;
-  margin-top: 2px;
+  /* border-radius: 15px 0 0 15px; */
+  border: 2px solid @surface1;
+  border-width: 0px 0px 2px 2px;
+  /* margin-top: 2px; */
   background: alpha(@crust, 1);
   color: alpha(@text, 1);
 }
 
 .modules-center {
-  padding: 0 15px;
-  margin-top: 2px;
-  border-radius: 15px 15px 15px 15px;
-  background: alpha(@crust, 1);
+  /* padding: 0 15px; */
+  /* margin-top: 2px; */
+  /* border-radius: 15px 15px 15px 15px; */
+  /* border: 2px solid @surface1; */
+  /* border-width: 0px 2px 2px 2px; */
+  /* background: alpha(@crust, 1); */
 }
 
 .modules-left {
-  border-radius: 0 15px 15px 0;
-  margin-top: 2px;
+  /* border-radius: 0 15px 15px 0; */
+  /* margin-top: 2px; */
+  border: 2px solid @surface1;
+  border-width: 0px 2px 2px 0px;
   padding-right: 10px;
   background: alpha(@crust, 1);
   color: alpha(@text, 1);
