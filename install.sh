@@ -74,6 +74,7 @@ DOTFILES_COPY=(
   ".config/hypr/hyprpaper/pixel-car.png"
   ".config/hypr/hyprpaper/pixel-planet.png"
   ".config/hypr/hyprpaper/WavesDark.jpg"
+  ".config/hypr/hyprpaper/what-expanded.gif"
 )
 
 # --- Functions ---
