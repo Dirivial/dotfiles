@@ -116,7 +116,7 @@ copy_file() {
 
   # Copy the files
   echo "  - Copying $source_path to $target_path"
-  cp "$DOTFILES_COPY_DIR/$source_path" "$target_path"
+  cp "$DOTFILES_DIR/$source_path" "$target_path"
 }
 
 # --- Main Script Logic ---
