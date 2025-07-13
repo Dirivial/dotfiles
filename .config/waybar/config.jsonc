@@ -1,8 +1,8 @@
 {
   "layer": "top", "position": "top",
-  "modules-left": ["custom/logo",  "disk", "memory", "cpu", "temperature" ],
+  "modules-left": ["custom/logo", "clock"], //["custom/logo",  "disk", "memory", "cpu", "temperature" ],
   "modules-center": [],
-  "modules-right": ["clock", "tray",  "custom/clipboard", "custom/packages", "backlight", "idle_inhibitor", "custom/colorpicker", "pulseaudio", "network",  "battery" ],
+  "modules-right": ["tray",  "custom/packages", "idle_inhibitor", "custom/colorpicker", "pulseaudio", "network",  "battery" ],
   "reload_style_on_change":true,
 
   "custom/logo": {
@@ -31,11 +31,12 @@
   },
 
 "idle_inhibitor":{
-  "format": "<span font='12'>{icon} </span>",
+  "format": "<span font='12'>{icon}</span>",
   "format-icons": {
     "activated":"󰈈",
     "deactivated":"󰈉"
-  }
+  },
+  "start-activated": true
 },
 
 "custom/clipboard":{
@@ -54,8 +55,8 @@
 },
 
 "network": {
-      "format-wifi": " ",
-      "format-ethernet":" ",
+      "format-wifi": "",
+      "format-ethernet":"",
       "format-disconnected": "",
       "tooltip-format": "{ipaddr}",
       "tooltip-format-wifi": "{essid} ({signalStrength}%)  | {ipaddr}",
@@ -70,7 +71,7 @@
             "warning": 30,
             "critical": 20
         },
-        "format": "{capacity}%  {icon} ",
+        "format": "{capacity}% {icon} ",
         "format-charging": "{capacity}% 󰂄 ",
         "format-plugged": "{capacity}% 󰂄 ",
         "format-alt": "{time} {icon}",

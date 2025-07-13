@@ -40,11 +40,12 @@ window#waybar {
 }
 
 #custom-logo {
-  padding: 0 15px;
+  padding: 0 20px 0px 10px;
+  border-right: 2px solid @surface1;
 }
 
 .modules-right {
-  padding-left: 5px;
+  /* padding-left: 5px; */
   /* border-radius: 15px 0 0 15px; */
   border: 2px solid @surface1;
   border-width: 0px 0px 2px 2px;
@@ -67,15 +68,14 @@ window#waybar {
   /* margin-top: 2px; */
   border: 2px solid @surface1;
   border-width: 0px 2px 2px 0px;
-  padding-right: 10px;
+  /* padding-right: 15px; */
   background: alpha(@crust, 1);
   color: alpha(@text, 1);
 }
 
-#battery,
+/* #battery, */
 #custom-clipboard,
 #custom-colorpicker,
-#custom-powerDraw,
 #bluetooth,
 #pulseaudio,
 #network,
@@ -91,8 +91,26 @@ window#waybar {
 #window,
 #workspaces,
 #clock {
-  padding: 0 5px;
+  padding: 0 10px;
   color: alpha(@text, 1);
+}
+
+#battery {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+#idle_inhibitor {
+  padding-left: 15px;
+}
+
+#tray {
+  border-right: 2px solid @surface1;
+  padding: 0 15px;
+}
+
+#clock {
+  padding: 0 15px;
 }
 
 #pulseaudio {
