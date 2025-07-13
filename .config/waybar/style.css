@@ -96,8 +96,8 @@ window#waybar {
 }
 
 #battery {
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 5px;
+  padding-left: 10px;
 }
 
 #idle_inhibitor {
@@ -115,7 +115,7 @@ window#waybar {
 
 #pulseaudio {
   padding-top: 3px;
-  padding-right: 10px;
+  padding-right: 15px;
 }
 
 #temperature.critical,
