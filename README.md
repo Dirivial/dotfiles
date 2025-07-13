@@ -11,6 +11,7 @@ sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/ya
 - alacritty
 - zsh
 - swww (handles gifs for background :))
+- gimp
 
 ## AUR
 - wlogout
