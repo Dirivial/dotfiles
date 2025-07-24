@@ -22,3 +22,7 @@ sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/ya
 
 ## Other
 - [oh-my-zsh](https://ohmyz.sh/)
+- tpm
+ - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+ - tmux source ~/.tmux.conf
+ - (Ctrl + a) -> (Shift + i) to install plugins
