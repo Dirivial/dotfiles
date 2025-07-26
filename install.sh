@@ -55,8 +55,6 @@ DOTFILES=(
   ".config/hypr/hyprland/execs.conf"
   ".config/hypr/hyprland/keybinds.conf"
   ".config/hypr/hyprland/programs.conf"
-  ".config/hypr/hyprland/windows.conf"
-  ".config/hypr/hyprland/workspaces.conf"
 
   ".config/hypr/hyprland/scripts/grimshot.sh"
 
@@ -164,3 +162,5 @@ done
 
 echo "Dotfiles setup complete!"
 echo "Remember to source your shell configuration (e.g., 'source ~/.bashrc' or 'exec zsh') for changes to take effect."
+
+echo "TODO: Link your computer configuration... fix this manually for now :)"
