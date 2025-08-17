@@ -52,7 +52,7 @@ window {
 
 #inner-box {
     margin: 2px;
-    padding: 5px
+    padding: 5px;
     border: none;
 }
 
@@ -123,5 +123,5 @@ window {
     color: @rosewater;
 }
 #entry:drop(active) {
-    background-color: @base !important;
+    background-color: @base;
 }
