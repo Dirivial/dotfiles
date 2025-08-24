@@ -1,19 +1,23 @@
 # dotfiles
-Dotfiles I want to save for future computers or if something happens with my current one or if I decide to switch distro.
 
+Dotfiles I want to save for future computers or if something happens with my current one or if I decide to switch distro.
 
 # Programs
 
 ## Install yay
-sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+
+sudo pacman -S --needed git base-devel && git clone <https://aur.archlinux.org/yay.git> && cd yay && makepkg -si
 
 ## Official
+
 - alacritty
 - zsh
 - swww (handles gifs for background :))
 - gimp
+- libwacom (for wacom tablet)
 
 ## AUR
+
 - wlogout
 - zen-browser-bin
 - unityhub [unity3d - archlinux](https://wiki.archlinux.org/title/Unity3D)
@@ -21,8 +25,9 @@ sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/ya
 - visual-studio-code-bin
 
 ## Other
+
 - [oh-my-zsh](https://ohmyz.sh/)
 - tpm
- - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
- - tmux source ~/.tmux.conf
- - (Ctrl + a) -> (Shift + i) to install plugins
+- git clone <https://github.com/tmux-plugins/tpm> ~/.tmux/plugins/tpm
+- tmux source ~/.tmux.conf
+- (Ctrl + a) -> (Shift + i) to install plugins
