@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 ############ Variables ############
-enable_battery=false
-battery_charging=false
+enable_battery=true
+battery_charging=true
 
 ####### Check availability ########
 for battery in /sys/class/power_supply/*BAT*; do
