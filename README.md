@@ -14,10 +14,10 @@ sudo pacman -S --needed git base-devel && git clone <https://aur.archlinux.org/y
 
 - alacritty
 - zsh
-- swww (handles gifs for background :))
+- awww (handles wallpaper)
 - gimp
 - libwacom (for wacom tablet)
-- hyprpaper
+- wtype (emoji pasting)
 
 ### AUR
 

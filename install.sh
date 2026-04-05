@@ -49,7 +49,6 @@ DOTFILES=(
     ".config/hypr/hypridle.conf"
     ".config/hypr/hyprland.conf"
     ".config/hypr/hyprlock.conf"
-    ".config/hypr/hyprpaper.conf"
 
     ".config/hypr/hyprland/colors.conf"
     ".config/hypr/hyprland/execs.conf"
@@ -71,6 +70,7 @@ DOTFILES=(
 DOTFILES_COPY=(
     ".config/hypr/hyprpaper/Cloudsnight.jpg"
     ".config/hypr/hyprpaper/dark-forest-village.png"
+    ".config/hypr/hyprpaper/dark-forest-village.gif"
     ".config/hypr/hyprpaper/pixel-car.png"
     ".config/hypr/hyprpaper/pixel-planet.png"
     ".config/hypr/hyprpaper/WavesDark.jpg"
