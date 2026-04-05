@@ -58,6 +58,7 @@ DOTFILES=(
 
     ".config/hypr/hyprland/scripts/grimshot.sh"
     ".config/hypr/hyprland/scripts/hyprsunset.sh"
+    ".config/hypr/hyprland/scripts/emoji-selector.sh"
 
     ".config/hypr/hyprlock/check-capslock.sh"
     ".config/hypr/hyprlock/status.sh"
