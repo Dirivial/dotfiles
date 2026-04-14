@@ -5,7 +5,9 @@ set -euo pipefail
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/hypr"
 EMOJI_CACHE="$CACHE_DIR/emojis.tsv"
 PROMPT="${EMOJI_SELECTOR_PROMPT:-Select emoji}"
-PASTE_DELAY="${EMOJI_SELECTOR_PASTE_DELAY:-0.2}"
+PASTE_DELAY="${EMOJI_SELECTOR_PASTE_DELAY:-0.35}"
+FOCUS_DELAY="${EMOJI_SELECTOR_FOCUS_DELAY:-0.05}"
+ACTIVE_WINDOW_CLASS=""
 
 mkdir -p "$CACHE_DIR"
 
@@ -133,6 +135,73 @@ restore_clipboard() {
   ) >/dev/null 2>&1 &
 }
 
+active_window_class() {
+  hyprctl activewindow 2>/dev/null | awk -F': ' '$1 ~ /^[[:space:]]*class$/ { print $2; exit }' || true
+}
+
+uses_terminal_paste_shortcut() {
+  local window_class="${1,,}"
+
+  case "$window_class" in
+    alacritty|kitty|foot|ghostty|wezterm|org.wezfurlong.wezterm|com.mitchellh.ghostty)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+send_paste_shortcut() {
+  local dispatch_output=""
+  local shortcuts=(
+    "CTRL,V,activewindow"
+    "CTRL, V, activewindow"
+    "CONTROL,V,activewindow"
+    "CONTROL, V, activewindow"
+    "CTRL,V"
+    "CTRL, V"
+    "CONTROL,V"
+    "CONTROL, V"
+  )
+
+  if uses_terminal_paste_shortcut "$ACTIVE_WINDOW_CLASS"; then
+    shortcuts=(
+      "CTRL SHIFT,V,activewindow"
+      "CTRL SHIFT, V, activewindow"
+      "CONTROL SHIFT,V,activewindow"
+      "CONTROL SHIFT, V, activewindow"
+      "CTRL SHIFT,V"
+      "CTRL SHIFT, V"
+      "CONTROL SHIFT,V"
+      "CONTROL SHIFT, V"
+    )
+  fi
+
+  sleep "$FOCUS_DELAY"
+
+  if command -v wtype >/dev/null 2>&1; then
+    if uses_terminal_paste_shortcut "$ACTIVE_WINDOW_CLASS"; then
+      if wtype -M ctrl -M shift -k v -m shift -m ctrl >/dev/null 2>&1; then
+        return 0
+      fi
+    fi
+
+    if wtype -M ctrl -k v -m ctrl >/dev/null 2>&1; then
+      return 0
+    fi
+  fi
+
+  for shortcut in "${shortcuts[@]}"; do
+    if dispatch_output="$(hyprctl dispatch sendshortcut "$shortcut" 2>&1)"; then
+      return 0
+    fi
+  done
+
+  printf '%s\n' "$dispatch_output" >&2
+  return 1
+}
+
 paste_selection() {
   local value="$1"
   local original_file
@@ -150,29 +219,13 @@ paste_selection() {
 
   printf '%s' "$value" | wl-copy --trim-newline
 
-  if command -v wtype >/dev/null 2>&1; then
+  if send_paste_shortcut; then
     restore_clipboard "$original_file" "$original_mime"
-    wtype -- "$value"
     return 0
   fi
 
-  restore_clipboard "$original_file" "$original_mime"
-
-  local dispatch_output=""
-
-  for shortcut in \
-    "CTRL,V" \
-    "CTRL, V" \
-    "CONTROL,V" \
-    "CONTROL, V"
-  do
-    if dispatch_output="$(hyprctl dispatch sendshortcut "$shortcut" 2>&1)"; then
-      return 0
-    fi
-  done
-
   notify-send "Emoji copied" "Paste the selected emoji manually if it was not inserted."
-  printf '%s\n' "$dispatch_output" >&2
+  rm -f "$original_file"
   return 1
 }
 
@@ -181,6 +234,8 @@ require_command wofi
 require_command wl-copy
 require_command wl-paste
 require_command hyprctl
+
+ACTIVE_WINDOW_CLASS="$(active_window_class)"
 
 if [[ ! -s "$EMOJI_CACHE" ]]; then
   build_emoji_cache
