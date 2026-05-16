@@ -73,12 +73,9 @@ window#waybar {
 }
 
 .modules-center {
-  /* padding: 0 15px; */
-  /* margin-top: 2px; */
-  /* border-radius: 15px 15px 15px 15px; */
-  /* border: 2px solid @surface1; */
-  /* border-width: 0px 2px 2px 2px; */
-  /* background: alpha(@crust, 1); */
+  margin: 4px 0 0 0;
+  background: transparent;
+  color: @moon;
 }
 
 .modules-left {
@@ -106,11 +103,86 @@ window#waybar {
 #jack,
 #tray,
 #window,
-#workspaces,
 #clock {
   padding: 0 10px;
   color: @moon;
   text-shadow: 1px 1px @night;
+}
+
+#workspaces {
+  padding: 0 6px;
+  background: alpha(@ravine, 0.91);
+  border: 2px solid @rock;
+  border-top-color: alpha(@waterfall, 0.42);
+  border-left-color: alpha(@mist, 0.62);
+  box-shadow:
+    2px 2px alpha(@night, 0.95),
+    inset 0 1px alpha(@waterfall, 0.22),
+    inset 0 -2px alpha(@pine, 0.72);
+}
+
+#workspaces button {
+  min-width: 24px;
+  min-height: 24px;
+  margin: 0 3px;
+  padding: 0;
+  color: alpha(@mist, 0.75);
+  background: transparent;
+  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-star.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+  border: 0;
+  text-shadow: 1px 1px @night;
+  box-shadow: none;
+}
+
+#workspaces button.active {
+  min-width: 30px;
+  color: @lantern;
+  background: transparent;
+  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-lantern.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+  border-bottom: 2px solid @ember;
+  box-shadow: none;
+}
+
+#workspaces button.empty {
+  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-rock.png");
+  background-size: 24px 24px;
+}
+
+#workspaces button.persistent,
+#workspaces button.visible {
+  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-star.png");
+  background-size: 24px 24px;
+}
+
+#workspaces button:hover {
+  background: transparent;
+  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-star.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+  color: @moon;
+}
+
+#workspaces button.active:hover {
+  background: transparent;
+  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-lantern.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+  color: @lantern;
+}
+
+#workspaces button.active {
+  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-lantern.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
 }
 
 #battery {
