@@ -25,13 +25,24 @@
 @define-color mantle rgb(24, 24, 37);
 @define-color crust rgb(17, 17, 27);
 
+@define-color night rgb(8, 9, 22);
+@define-color ravine rgb(15, 18, 36);
+@define-color rock rgb(31, 32, 55);
+@define-color mist rgb(88, 93, 128);
+@define-color waterfall rgb(122, 137, 171);
+@define-color lantern rgb(255, 174, 63);
+@define-color ember rgb(224, 89, 36);
+@define-color pine rgb(28, 53, 70);
+@define-color moon rgb(188, 183, 213);
+
 
 
 * {
     border: none;
     font-size: 16px;
     font-family: "Iosevka Nerd Font" ;
-    min-height: 30px;
+    min-height: 28px;
+    border-radius: 0;
 }
 
 window#waybar {
@@ -40,18 +51,25 @@ window#waybar {
 }
 
 #custom-logo {
-  padding: 0 20px 0px 10px;
-  border-right: 2px solid @surface1;
+  margin: 0 4px 0 0;
+  padding: 0 14px 0 10px;
+  color: @moon;
+  background: alpha(@night, 0.94);
+  border: 2px solid @rock;
+  border-top-color: alpha(@waterfall, 0.5);
+  border-left-color: alpha(@mist, 0.65);
+  box-shadow:
+    2px 2px alpha(@night, 0.95),
+    inset 0 -2px @ember,
+    inset 0 1px alpha(@waterfall, 0.35);
 }
 
 .modules-right {
-  /* padding-left: 5px; */
-  /* border-radius: 15px 0 0 15px; */
-  border: 2px solid @surface1;
-  border-width: 0px 0px 2px 2px;
-  /* margin-top: 2px; */
-  background: alpha(@crust, 1);
-  color: alpha(@text, 1);
+  margin: 4px 4px 0 0;
+  border: 0;
+  background: transparent;
+  color: @moon;
+  box-shadow: none;
 }
 
 .modules-center {
@@ -64,18 +82,17 @@ window#waybar {
 }
 
 .modules-left {
-  /* border-radius: 0 15px 15px 0; */
-  /* margin-top: 2px; */
-  border: 2px solid @surface1;
-  border-width: 0px 2px 2px 0px;
-  /* padding-right: 15px; */
-  background: alpha(@crust, 1);
-  color: alpha(@text, 1);
+  margin: 4px 0 0 4px;
+  border: 0;
+  background: transparent;
+  color: @moon;
+  box-shadow: none;
 }
 
 /* #battery, */
 #custom-clipboard,
 #custom-colorpicker,
+#custom-packages,
 #bluetooth,
 #pulseaudio,
 #network,
@@ -92,7 +109,8 @@ window#waybar {
 #workspaces,
 #clock {
   padding: 0 10px;
-  color: alpha(@text, 1);
+  color: @moon;
+  text-shadow: 1px 1px @night;
 }
 
 #battery {
@@ -100,43 +118,103 @@ window#waybar {
   padding-left: 10px;
 }
 
-#idle_inhibitor {
-  padding-left: 15px;
-}
-
 #tray {
-  border-right: 2px solid @surface1;
+  border-right: 2px solid @rock;
   padding: 0 15px;
 }
 
 #clock {
-  padding: 0 15px;
+  padding: 0 14px;
+  color: @waterfall;
 }
 
 #pulseaudio {
-  padding-top: 3px;
-  padding-right: 15px;
+  padding-right: 12px;
 }
 
+#clock,
+#tray,
+#custom-packages,
+#custom-colorpicker,
+#idle_inhibitor,
+#pulseaudio,
+#network,
+#battery {
+  margin: 0 0 0 4px;
+  background: alpha(@ravine, 0.91);
+  border: 2px solid @rock;
+  border-top-color: alpha(@waterfall, 0.42);
+  border-left-color: alpha(@mist, 0.62);
+  color: @moon;
+  box-shadow:
+    2px 2px alpha(@night, 0.95),
+    inset 0 1px alpha(@waterfall, 0.22),
+    inset 0 -2px alpha(@pine, 0.72);
+}
+
+#clock {
+  margin-left: 0;
+}
+
+#tray {
+  padding: 0 12px;
+}
+
+#custom-packages,
+#pulseaudio,
+#battery {
+  box-shadow:
+    2px 2px alpha(@night, 0.95),
+    inset 0 1px alpha(@waterfall, 0.22),
+    inset 0 -2px alpha(@lantern, 0.55);
+}
+
+#custom-colorpicker,
+#idle_inhibitor {
+  color: @moon;
+  min-width: 8px;
+}
+
+#custom-colorpicker,
+#network {
+  min-width: 28px;
+  padding: 0;
+}
+
+#network.disconnected,
 #temperature.critical,
 #pulseaudio.muted {
-  color: #FF0000;
+  color: @ember;
   padding-top: 0;
 }
 
 #battery.charging {
-    color: #ffffff;
-    background-color: #26A65B;
+    color: @night;
+    background-color: @waterfall;
+    text-shadow: none;
+    border-color: @rock;
+    border-top-color: alpha(@moon, 0.75);
+    box-shadow:
+      2px 2px alpha(@night, 0.95),
+      inset 0 -2px @pine,
+      inset 0 1px alpha(@moon, 0.65);
 }
 
 #battery.warning:not(.charging) {
-    background-color: #ffbe61;
-    color: black;
+    background-color: @lantern;
+    color: @night;
+    text-shadow: none;
+    border-color: @rock;
+    border-top-color: alpha(@moon, 0.55);
+    box-shadow:
+      2px 2px alpha(@night, 0.95),
+      inset 0 -2px @ember,
+      inset 0 1px alpha(@moon, 0.55);
 }
 
 #battery.critical:not(.charging) {
-    background-color: #f53c3c;
-    color: #ffffff;
+    background-color: @ember;
+    color: @moon;
     animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
@@ -145,16 +223,21 @@ window#waybar {
 }
 
 tooltip {
-    background-color: alpha(@base, 1); /* Example background */
-    border: 1px solid alpha(@pink, 1); /* Example border */
+    background-color: alpha(@ravine, 0.98);
+    border: 2px solid @rock;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 0;
+    color: @moon;
+    box-shadow:
+      2px 2px @night,
+      inset 0 1px alpha(@waterfall, 0.35),
+      inset 0 -2px alpha(@pine, 0.8);
 }
 
 @keyframes blink {
     to {
-        background-color: #ffffff;
-        color: #000000;
+        background-color: @lantern;
+        color: @night;
+        text-shadow: none;
     }
 }
-
