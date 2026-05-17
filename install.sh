@@ -39,6 +39,7 @@ DOTFILES=(
     ".config/wlogout/style.css"
 
     # Waybar
+    ".config/waybar/assets"
     ".config/waybar/config.jsonc"
     ".config/waybar/style.css"
     ".config/waybar/scripts/checkupdates.sh"

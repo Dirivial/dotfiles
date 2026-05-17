@@ -128,7 +128,7 @@ window#waybar {
   padding: 0;
   color: alpha(@mist, 0.75);
   background: transparent;
-  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-star.png");
+  background-image: url("assets/workspace-star.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 24px 24px;
@@ -141,7 +141,7 @@ window#waybar {
   min-width: 30px;
   color: @lantern;
   background: transparent;
-  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-lantern.png");
+  background-image: url("assets/workspace-lantern.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 24px 24px;
@@ -150,19 +150,19 @@ window#waybar {
 }
 
 #workspaces button.empty {
-  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-rock.png");
+  background-image: url("assets/workspace-rock.png");
   background-size: 24px 24px;
 }
 
 #workspaces button.persistent,
 #workspaces button.visible {
-  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-star.png");
+  background-image: url("assets/workspace-star.png");
   background-size: 24px 24px;
 }
 
 #workspaces button:hover {
   background: transparent;
-  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-star.png");
+  background-image: url("assets/workspace-star.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 24px 24px;
@@ -171,7 +171,7 @@ window#waybar {
 
 #workspaces button.active:hover {
   background: transparent;
-  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-lantern.png");
+  background-image: url("assets/workspace-lantern.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 24px 24px;
@@ -179,7 +179,7 @@ window#waybar {
 }
 
 #workspaces button.active {
-  background-image: url("/home/dirivial/code/dotfiles/.config/waybar/assets/workspace-lantern.png");
+  background-image: url("assets/workspace-lantern.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 24px 24px;
