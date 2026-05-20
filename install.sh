@@ -48,13 +48,16 @@ DOTFILES=(
 
     # Hypr
     ".config/hypr/hypridle.conf"
-    ".config/hypr/hyprland.conf"
+    ".config/hypr/hyprland.lua"
     ".config/hypr/hyprlock.conf"
 
-    ".config/hypr/hyprland/colors.conf"
-    ".config/hypr/hyprland/execs.conf"
-    ".config/hypr/hyprland/keybinds.conf"
-    ".config/hypr/hyprland/programs.conf"
+    ".config/hypr/hyprland/colors.lua"
+    ".config/hypr/hyprland/execs.lua"
+    ".config/hypr/hyprland/keybinds.lua"
+    ".config/hypr/hyprland/programs.lua"
+    ".config/hypr/hyprland/this-computer.lua"
+    ".config/hypr/hyprland/per-device/desktop.lua"
+    ".config/hypr/hyprland/per-device/laptop.lua"
 
     ".config/hypr/hyprland/scripts/grimshot.sh"
     ".config/hypr/hyprland/scripts/hyprsunset.sh"
