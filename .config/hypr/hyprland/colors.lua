@@ -1,3 +1,5 @@
+local hyprbars = hl.plugin and hl.plugin.hyprbars
+
 hl.config({
     general = {
         col = {
@@ -8,6 +10,13 @@ hl.config({
     misc = {
         background_color = "rgba(1D1011FF)",
     },
+})
+
+if not (hyprbars and hyprbars.add_button) then
+    return
+end
+
+hl.config({
     plugin = {
         hyprbars = {
             bar_text_font = "Rubik, Geist, AR One Sans, Reddit Sans, Inter, Roboto, Ubuntu, Noto Sans, sans-serif",
@@ -20,13 +29,30 @@ hl.config({
             col = {
                 text = "rgba(F7DCDEFF)",
             },
-            -- Hyprbars exposes this as a repeated plugin keyword in hyprlang.
-            -- Lua plugin keyword support is not yet documented on the wiki.
-            ["hyprbars-button"] = {
-                { "rgb(F7DCDE)", 13, "󰖭", "hyprctl dispatch 'hl.dsp.window.close()'" },
-                { "rgb(F7DCDE)", 13, "󰖯", "hyprctl dispatch 'hl.dsp.window.fullscreen({ mode = \"maximized\" })'" },
-                { "rgb(F7DCDE)", 13, "󰖰", "hyprctl dispatch 'hl.dsp.window.move({ workspace = \"special\" })'" },
-            },
         },
     },
+})
+
+hyprbars.add_button({
+    bg_color = "rgb(F7DCDE)",
+    fg_color = "rgb(1D1011)",
+    size = 13,
+    icon = "󰖭",
+    action = "hyprctl dispatch 'hl.dsp.window.close()'",
+})
+
+hyprbars.add_button({
+    bg_color = "rgb(F7DCDE)",
+    fg_color = "rgb(1D1011)",
+    size = 13,
+    icon = "󰖯",
+    action = "hyprctl dispatch 'hl.dsp.window.fullscreen({ mode = \"maximized\" })'",
+})
+
+hyprbars.add_button({
+    bg_color = "rgb(F7DCDE)",
+    fg_color = "rgb(1D1011)",
+    size = 13,
+    icon = "󰖰",
+    action = "hyprctl dispatch 'hl.dsp.window.move({ workspace = \"special\" })'",
 })
