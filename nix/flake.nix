@@ -11,21 +11,52 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... } @ inputs: {
-    nixosConfigurations.alkade = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
-      system = "x86_64-linux";
-      modules = [
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.alkade = import ./home.nix;
-            backupFileExtension = "backup";
-          };
-        }
-      ];
+    nixosConfigurations = {
+      laptop = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/laptop/configuration.nix
+          ./modules/common/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.alkade = {
+                imports = [
+                  ./modules/common/home.nix
+                  ./hosts/laptop/home.nix
+                ];
+              };
+              backupFileExtension = "backup";
+            };
+          }
+        ];
+      };
+
+      desktop = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/desktop/configuration.nix
+          ./modules/common/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.alkade = {
+                imports = [
+                  ./modules/common/home.nix
+                  ./hosts/desktop/home.nix
+                ];
+              };
+              backupFileExtension = "backup";
+            };
+          }
+        ];
+      };
     };
   };
 }

@@ -1,11 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
-  home.username = "alkade";
-  home.homeDirectory = "/home/alkade";
+  home.username = lib.mkDefault("alkade");
+  home.homeDirectory = lib.mkDefault("/home/alkade");
   home.stateVersion = "25.11";
 
-  home.packages = [
-    pkgs.bitwarden-desktop
+  home.packages = with pkgs; [
+    bitwarden-desktop
+    hyprsunset
   ];
 
   programs.bash.enable = true;
