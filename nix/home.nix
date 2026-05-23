@@ -4,6 +4,10 @@
   home.homeDirectory = "/home/alkade";
   home.stateVersion = "25.11";
 
+  home.packages = [
+    pkgs.bitwarden-desktop
+  ];
+
   programs.bash.enable = true;
   programs.tmux.enable = true;
 
