@@ -5,9 +5,9 @@
   home.stateVersion = "25.11";
 
   programs.bash.enable = true;
-  programs.swww.enable = true;
   programs.tmux.enable = true;
-  programs.dunst.enable = true;
+  services.awww.enable = true;
+  services.dunst.enable = true;
 
   programs.git = {
     enable = true;
