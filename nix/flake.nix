@@ -16,8 +16,8 @@
         specialArgs = { inherit inputs; };
         system = "x86_64-linux";
         modules = [
+          ./hosts/common/configuration.nix
           ./hosts/laptop/configuration.nix
-          ./modules/common/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager = {
@@ -39,8 +39,8 @@
         specialArgs = { inherit inputs; };
         system = "x86_64-linux";
         modules = [
+          ./hosts/common/configuration.nix
           ./hosts/desktop/configuration.nix
-          ./modules/common/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager = {

@@ -4,6 +4,7 @@
   imports =
     [
       /etc/nixos/hardware-configuration.nix
+      ../../modules/terminal/alacritty.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -90,12 +91,18 @@
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
+  fonts = {
+    fontconfig.enable = true;
+    packages = with pkgs; [
+      nerd-fonts.iosevka
+    ];
+  }; 
+
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     alacritty
     chromium
-    nerd-fonts.iosevka
     kitty
     vim
     waybar
