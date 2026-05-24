@@ -25,7 +25,7 @@
               useUserPackages = true;
               users.alkade = {
                 imports = [
-                  ./modules/common/home.nix
+                  ./hosts/common/home.nix
                   ./hosts/laptop/home.nix
                 ];
               };
@@ -48,7 +48,7 @@
               useUserPackages = true;
               users.alkade = {
                 imports = [
-                  ./modules/common/home.nix
+                  ./hosts/common/home.nix
                   ./hosts/desktop/home.nix
                 ];
               };

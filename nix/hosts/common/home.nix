@@ -1,5 +1,10 @@
 { config, pkgs, lib, ... }:
 {
+
+  imports = [
+    ../../modules/terminal/alacritty.nix
+  ];
+
   home.username = lib.mkDefault("alkade");
   home.homeDirectory = lib.mkDefault("/home/alkade");
   home.stateVersion = "25.11";

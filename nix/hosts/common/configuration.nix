@@ -4,7 +4,6 @@
   imports =
     [
       /etc/nixos/hardware-configuration.nix
-      ../../modules/terminal/alacritty.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
