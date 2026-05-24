@@ -14,6 +14,7 @@
   home.packages = with pkgs; [
     bitwarden-desktop
     hyprsunset
+    signal-desktop
   ];
 
   programs.bash.enable = true;
