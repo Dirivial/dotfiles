@@ -2,6 +2,7 @@
 {
 
   imports = [
+    ../../modules/desktop/waybar.nix
     ../../modules/terminal/alacritty.nix
   ];
 
@@ -20,7 +21,6 @@
   # DE
   services.awww.enable = true;
   services.dunst.enable = true;
-  programs.waybar.enable = true;
   programs.wlogout.enable = true;
   
 
