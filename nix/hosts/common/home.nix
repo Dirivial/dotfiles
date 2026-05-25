@@ -4,6 +4,7 @@
   imports = [
     ../../modules/desktop/dunst.nix
     ../../modules/desktop/waybar.nix
+    ../../modules/desktop/wlogout.nix
     ../../modules/desktop/wofi.nix
     ../../modules/terminal/alacritty.nix
   ];
@@ -23,7 +24,6 @@
 
   # DE
   services.awww.enable = true;
-  programs.wlogout.enable = true;
   
 
   programs.git = {
