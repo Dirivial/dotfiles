@@ -1,6 +1,8 @@
 { ... }:
 
 {
+  home.sessionVariables.NVIM_TOOLS_MANAGED_BY_NIX = "1";
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
