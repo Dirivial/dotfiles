@@ -8,5 +8,7 @@
     vimAlias = true;
     withPython3 = false;
     withRuby = false;
+    # Keep the existing nvim submodule responsible for ~/.config/nvim/init.lua.
+    sideloadInitLua = true;
   };
 }
