@@ -98,7 +98,6 @@
     alacritty
     chromium
     kitty
-    neovim
     vim
     waybar
     wget

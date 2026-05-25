@@ -2,10 +2,12 @@
 {
 
   imports = [
+    ../../modules/development/tools.nix
     ../../modules/desktop/dunst.nix
     ../../modules/desktop/waybar.nix
     ../../modules/desktop/wlogout.nix
     ../../modules/desktop/wofi.nix
+    ../../modules/editor/neovim.nix
     ../../modules/terminal/alacritty.nix
   ];
 
