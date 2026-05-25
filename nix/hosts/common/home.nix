@@ -31,6 +31,8 @@
   programs.git = {
     enable = true;
     settings = {
+      core.editor = "nvim";
+      init.defaultBranch = "main";
       user = {
         name = "Alexander";
         email = "alexander.kadeby@gmail.com";
