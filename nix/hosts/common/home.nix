@@ -2,7 +2,7 @@
 {
 
   imports = [
-    ../../modules/development/tools.nix
+    ../../modules/dev/tools.nix
     ../../modules/desktop/dunst.nix
     ../../modules/desktop/waybar.nix
     ../../modules/desktop/wlogout.nix
