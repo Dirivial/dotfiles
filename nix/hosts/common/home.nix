@@ -4,6 +4,7 @@
   imports = [
     ../../modules/desktop/dunst.nix
     ../../modules/desktop/waybar.nix
+    ../../modules/desktop/wofi.nix
     ../../modules/terminal/alacritty.nix
   ];
 
