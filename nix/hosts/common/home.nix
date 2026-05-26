@@ -9,6 +9,7 @@
     ../../modules/desktop/wofi.nix
     ../../modules/editor/neovim.nix
     ../../modules/terminal/alacritty.nix
+    ../../modules/terminal/zsh.nix
   ];
 
   home.username = lib.mkDefault("alkade");
@@ -23,7 +24,6 @@
 
   programs.bash.enable = true;
   programs.tmux.enable = true;
-  programs.zsh.enable = true;
 
   # DE
   services.awww.enable = true;
