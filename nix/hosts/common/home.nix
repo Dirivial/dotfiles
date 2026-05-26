@@ -10,6 +10,7 @@
     ../../modules/desktop/wofi.nix
     ../../modules/editor/neovim.nix
     ../../modules/terminal/alacritty.nix
+    ../../modules/terminal/tmux.nix
     ../../modules/terminal/zsh.nix
   ];
 
@@ -24,7 +25,6 @@
   ];
 
   programs.bash.enable = true;
-  programs.tmux.enable = true;
 
   # DE
   services.awww.enable = true;
