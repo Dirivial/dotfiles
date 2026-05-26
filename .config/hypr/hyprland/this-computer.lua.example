@@ -1,0 +1,4 @@
+-- For systems not managed by Nix, copy this file to this-computer.lua
+-- and select the appropriate device profile.
+require("hyprland.per-device.laptop")
+-- require("hyprland.per-device.desktop")

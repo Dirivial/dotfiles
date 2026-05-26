@@ -4,6 +4,7 @@
   imports = [
     ../../modules/dev/tools.nix
     ../../modules/desktop/dunst.nix
+    ../../modules/desktop/hyprland.nix
     ../../modules/desktop/waybar.nix
     ../../modules/desktop/wlogout.nix
     ../../modules/desktop/wofi.nix
