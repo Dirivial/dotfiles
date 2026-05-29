@@ -1,4 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   # Use the systemd-boot EFI boot loader.
@@ -27,7 +33,7 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = false;
-  
+
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
@@ -56,7 +62,10 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.alkade = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
     packages = with pkgs; [
       tree
     ];
@@ -65,24 +74,33 @@
   programs.firefox.enable = true;
   programs.regreet = {
     enable = true;
+    settings = {
+      background = {
+        path = ../../../.config/hypr/hyprpaper/dark-forest-village.png;
+        fit = "Cover";
+      };
+      GTK.application_prefer_dark_theme = true;
+    };
     font = {
-      name = "Iosevka Nerd Font Mono";
+      package = pkgs.nerd-fonts.iosevka;
+      name = "Iosevka Nerd Font";
       size = 16;
     };
   };
 
   # Before hyprland package
   nix.settings = {
-    substituters = ["https://hyprland.cachix.org"];
-    trusted-substituters = ["https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    substituters = [ "https://hyprland.cachix.org" ];
+    trusted-substituters = [ "https://hyprland.cachix.org" ];
+    trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
 
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   fonts = {
@@ -90,7 +108,7 @@
     packages = with pkgs; [
       nerd-fonts.iosevka
     ];
-  }; 
+  };
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
@@ -105,7 +123,10 @@
     zsh
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
