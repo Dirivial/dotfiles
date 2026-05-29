@@ -14,6 +14,7 @@
     markdownlint-cli
     nil
     nixfmt
+    nodejs_24
     python3
     ripgrep
     ruff
