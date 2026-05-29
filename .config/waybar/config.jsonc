@@ -21,10 +21,6 @@
       "persistent": " ",
       "visible": " ",
       "default": " "
-    },
-    "persistent-workspaces": {
-      "DP-1": ["0"],
-      "DP-2": ["1", "2", "3", "4", "5"]
     }
   },
 
