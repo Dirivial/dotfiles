@@ -94,6 +94,9 @@
     trusted-substituters = [ "https://hyprland.cachix.org" ];
     trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "obsidian"
+  ];
 
   programs.hyprland = {
     enable = true;
@@ -140,6 +143,20 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+      "*/30 * * * * alkade PATH=${
+        lib.makeBinPath [
+          pkgs.coreutils
+          pkgs.dunst
+          pkgs.git
+          pkgs.gnugrep
+        ]
+      }:/run/current-system/sw/bin /home/alkade/dotfiles/scripts/vault_sync.sh"
+    ];
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
