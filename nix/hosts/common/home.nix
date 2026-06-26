@@ -21,6 +21,7 @@
   home.packages = with pkgs; [
     bitwarden-desktop
     hyprsunset
+    obsidian
     signal-desktop
   ];
 
