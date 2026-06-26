@@ -8,9 +8,9 @@ send_notification() {
 
   if command -v dunstify &>/dev/null; then
     if [ "$type" == "success" ]; then
-      /usr/bin/dunstify -u low -t 3000 "$title" "$message"
+      dunstify -u low -t 3000 "$title" "$message"
     elif [ "$type" == "error" ]; then
-      /usr/bin/dunstify -u critical -t 5000 "$title" "$message"
+      dunstify -u critical -t 5000 "$title" "$message"
     fi
   else
     echo "dunstify command not found. Please install it for notifications."
@@ -25,7 +25,7 @@ cd ~/personal/obsidian-vault/ || {
 
 # --- 1. Git Pull ---
 echo "Attempting git pull..."
-/usr/bin/git pull
+git pull
 if [ $? -ne 0 ]; then
   send_notification "error" "Git pull failed. Please check your connection or repository status."
   exit 1
@@ -34,7 +34,7 @@ echo "Git pull successful."
 
 # --- 2. Git Add All ---
 echo "Attempting git add all files..."
-/usr/bin/git add .
+git add .
 if [ $? -ne 0 ]; then
   send_notification "error" "Git add failed. Could not stage files."
   exit 1
@@ -47,7 +47,7 @@ echo "Commit message will be: $COMMIT_MESSAGE"
 
 # --- 4. Git Commit ---
 echo "Attempting git commit..."
-/usr/bin/git commit -m "$COMMIT_MESSAGE"
+git commit -m "$COMMIT_MESSAGE"
 if [ $? -ne 0 ]; then
   # Check if the failure is due to "nothing to commit"
   if git status --porcelain | grep -q .; then
@@ -64,7 +64,7 @@ echo "Git commit successful."
 
 # --- 5. Git Push ---
 echo "Attempting git push..."
-/usr/bin/git push
+git push
 if [ $? -ne 0 ]; then
   send_notification "error" "Git push failed. Please check your remote repository or credentials."
   exit 1
