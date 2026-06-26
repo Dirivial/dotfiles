@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Define a function to send dunstify notifications
 send_notification() {
@@ -55,7 +55,8 @@ if [ $? -ne 0 ]; then
     send_notification "error" "Git commit failed. There might be an issue with the commit operation itself."
   else
     # No changes to commit, which is not an error for this script's purpose
-    send_notification "success" "No changes to commit. Skipping push."
+    # I don't want to spam the user with notifications for every commit
+    # send_notification "success" "No changes to commit. Skipping push."
     exit 0 # Exit successfully as there's nothing to push
   fi
   exit 1
