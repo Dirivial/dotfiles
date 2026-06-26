@@ -25,7 +25,7 @@
   },
 
 "idle_inhibitor":{
-  "format": "<span font='12'>{icon}</span>",
+  "format": "<span>{icon}</span>",
   "format-icons": {
     "activated":"󰈈 ",
     "deactivated":"󰈉 "
@@ -49,9 +49,9 @@
 },
 
 "network": {
-      "format-wifi": "",
-      "format-ethernet":"",
-      "format-disconnected": "",
+      "format-wifi": "",
+      "format-ethernet":"󰈀  ",
+      "format-disconnected": "  ",
       "tooltip-format": "{ipaddr}",
       "tooltip-format-wifi": "{essid} ({signalStrength}%)  | {ipaddr}",
       "tooltip-format-ethernet": "{ifname} 🖧 | {ipaddr}",

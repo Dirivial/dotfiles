@@ -39,8 +39,8 @@
 
 * {
     border: none;
-    font-size: 16px;
-    font-family: "Iosevka Nerd Font" ;
+    font-size: 20px;
+    font-family: "Iosevka Nerd Font Mono";
     min-height: 28px;
     border-radius: 0;
 }
@@ -51,8 +51,9 @@ window#waybar {
 }
 
 #custom-logo {
+  font-size: 32px;
   margin: 0 4px 0 0;
-  padding: 0 14px 0 10px;
+  padding: 0 8px 0 10px;
   color: @moon;
   background: alpha(@night, 0.94);
   border: 2px solid @rock;
@@ -241,10 +242,12 @@ window#waybar {
     inset 0 -2px alpha(@lantern, 0.55);
 }
 
+#network,
 #custom-colorpicker,
 #idle_inhibitor {
   color: @moon;
   min-width: 8px;
+  font-size: 32px;
 }
 
 #custom-colorpicker,

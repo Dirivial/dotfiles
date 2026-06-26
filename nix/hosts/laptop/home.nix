@@ -10,6 +10,7 @@
   home.packages = with pkgs; [
     codex
     localsend
+    networkmanager_dmenu
   ];
   
 }
