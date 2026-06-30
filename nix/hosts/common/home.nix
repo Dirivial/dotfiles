@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
 
   imports = [
@@ -14,15 +19,19 @@
     ../../modules/terminal/zsh.nix
   ];
 
-  home.username = lib.mkDefault("alkade");
-  home.homeDirectory = lib.mkDefault("/home/alkade");
+  home.username = lib.mkDefault ("alkade");
+  home.homeDirectory = lib.mkDefault ("/home/alkade");
   home.stateVersion = "25.11";
 
   home.packages = with pkgs; [
     bitwarden-desktop
+    cursor-clip
+    hyprpicker
     hyprsunset
     obsidian
+    pavucontrol
     signal-desktop
+    wl-clipboard
   ];
 
   programs.bash.enable = true;
