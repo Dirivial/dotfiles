@@ -36,9 +36,10 @@
 
   programs.bash.enable = true;
 
+  services.ssh-agent.enable = true;
+
   # DE
   services.awww.enable = true;
-  
 
   programs.git = {
     enable = true;
