@@ -7,6 +7,7 @@
     cpplint
     delve
     fd
+    gcc
     gofumpt
     golangci-lint
     gopls
