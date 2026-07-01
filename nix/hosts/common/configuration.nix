@@ -56,6 +56,8 @@
     powerOnBoot = true;
   };
 
+  hardware.acpilight.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
@@ -65,6 +67,7 @@
     extraGroups = [
       "wheel"
       "networkmanager"
+      "video"
     ];
     packages = with pkgs; [
       tree

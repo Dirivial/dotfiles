@@ -25,6 +25,7 @@
 
   home.packages = with pkgs; [
     bitwarden-desktop
+    brightnessctl
     cursor-clip
     hyprpicker
     hyprsunset
