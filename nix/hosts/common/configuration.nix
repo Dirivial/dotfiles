@@ -34,8 +34,12 @@
   # Enable the X11 windowing system.
   services.xserver.enable = false;
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      gutenprint
+    ];
+  };
 
   # Enable sound.
   services.pulseaudio.enable = false;
