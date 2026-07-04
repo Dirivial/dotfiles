@@ -4,6 +4,14 @@
   lib,
   ...
 }:
+let
+  catppuccinYazi = pkgs.fetchFromGitHub {
+    owner = "catppuccin";
+    repo = "yazi";
+    rev = "main";
+    sha256 = "sha256-L6SApM07CSQk0znEsFP8WaxW+ZHcindXo612r1XcwIg=";
+  };
+in
 {
 
   imports = [
@@ -23,10 +31,14 @@
   home.homeDirectory = lib.mkDefault ("/home/alkade");
   home.stateVersion = "25.11";
 
-  home.packages = with pkgs; [
+  home.packages = (with pkgs; [
+    yazi
+  ]) ++ (with pkgs; [
     bitwarden-desktop
     brightnessctl
     cursor-clip
+    catppuccin-kde
+    kdePackages.dolphin
     gimp
     hyprpicker
     hyprsunset
@@ -35,7 +47,18 @@
     signal-cli
     signal-desktop
     wl-clipboard
-  ];
+  ]);
+
+  xdg.configFile."kdeglobals".text = ''
+    [General]
+    ColorScheme=CatppuccinFrappeBlue
+  '';
+
+  xdg.configFile."yazi/theme.toml".source =
+    "${catppuccinYazi}/themes/frappe/catppuccin-frappe-blue.toml";
+
+  xdg.dataFile."color-schemes/CatppuccinFrappeBlue.colors".source =
+    "${pkgs.catppuccin-kde}/share/color-schemes/CatppuccinFrappeBlue.colors";
 
   services.ssh-agent.enable = true;
 

@@ -82,6 +82,7 @@
   programs.firefox.enable = true;
   programs.zsh.enable = true;
   programs.nix-ld.enable = true;
+  virtualisation.podman.enable = true;
   programs.regreet = {
     enable = true;
     settings = {
