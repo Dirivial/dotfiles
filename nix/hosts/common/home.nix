@@ -32,6 +32,7 @@
     hyprsunset
     obsidian
     pavucontrol
+    signal-cli
     signal-desktop
     wl-clipboard
   ];
