@@ -29,6 +29,8 @@
     ];
 
     extraConfig = ''
+      set -g default-shell "${pkgs.zsh}/bin/zsh"
+
       bind r source-file ~/.config/tmux/tmux.conf
       bind C-p command-prompt -I "#{session_path}" "attach-session -c '%%'"
       bind P attach-session -c "#{pane_current_path}"

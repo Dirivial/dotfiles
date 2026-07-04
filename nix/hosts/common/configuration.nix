@@ -68,6 +68,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.alkade = {
     isNormalUser = true;
+    shell = pkgs.zsh;
     extraGroups = [
       "wheel"
       "networkmanager"
@@ -79,6 +80,7 @@
   };
 
   programs.firefox.enable = true;
+  programs.zsh.enable = true;
   programs.nix-ld.enable = true;
   programs.regreet = {
     enable = true;
@@ -105,6 +107,8 @@
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "obsidian"
   ];
+
+  environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
 
   programs.hyprland = {
     enable = true;

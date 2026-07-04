@@ -37,8 +37,6 @@
     wl-clipboard
   ];
 
-  programs.bash.enable = true;
-
   services.ssh-agent.enable = true;
 
   # DE
