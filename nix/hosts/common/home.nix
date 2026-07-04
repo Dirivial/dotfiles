@@ -27,6 +27,7 @@
     bitwarden-desktop
     brightnessctl
     cursor-clip
+    gimp
     hyprpicker
     hyprsunset
     obsidian
