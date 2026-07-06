@@ -24,6 +24,21 @@
   home.homeDirectory = lib.mkDefault ("/home/alkade");
   home.stateVersion = "25.11";
 
+  home.packages = with pkgs; [
+    bitwarden-desktop
+    brightnessctl
+    cursor-clip
+    kdePackages.dolphin
+    gimp
+    hyprpicker
+    hyprsunset
+    obsidian
+    pavucontrol
+    signal-cli
+    signal-desktop
+    wl-clipboard
+  ];
+
   services.ssh-agent.enable = true;
 
   # DE
