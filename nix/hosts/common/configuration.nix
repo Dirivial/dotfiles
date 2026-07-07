@@ -108,6 +108,9 @@
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "obsidian"
   ];
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+  ];
 
   environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
 
