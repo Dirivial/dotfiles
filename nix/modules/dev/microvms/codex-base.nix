@@ -22,15 +22,20 @@
 { lib, pkgs, ... }:
 let
   homeDirectory = "/home/${userName}";
+  codexWithBypass = pkgs.writeShellScriptBin "codex" ''
+    exec ${pkgs.codex}/bin/codex --dangerously-bypass-approvals-and-sandbox "$@"
+  '';
 in
 {
   environment.systemPackages =
     with pkgs;
     [
-      codex
+      codexWithBypass
       git
       openssh
       ripgrep
+      tmux
+      vim
       zsh
     ]
     ++ extraPackages;
@@ -87,11 +92,30 @@ in
   security.sudo.wheelNeedsPassword = false;
   programs.zsh = {
     enable = true;
+    ohMyZsh = {
+      enable = true;
+      theme = "crunch";
+      plugins = [
+        "git"
+        "tmux"
+      ];
+      custom = "${pkgs.oh-my-zsh}/share/oh-my-zsh/custom";
+    };
     shellInit = ''
       export CODEX_HOME=${homeDirectory}/.codex
+      export PNPM_HOME="$HOME/.local/share/pnpm"
+
+      export EDITOR="vim"
+      path+=("$PNPM_HOME" "$HOME/go/bin")
+
+      if [[ -f "$HOME/.local/bin/env" ]]; then
+        . "$HOME/.local/bin/env"
+      fi
+
       if [ "$USER" = ${lib.escapeShellArg userName} ] && [ -d ${lib.escapeShellArg workspace} ]; then
         cd ${lib.escapeShellArg workspace}
       fi
+
       ${extraShellInit}
     '';
   };
