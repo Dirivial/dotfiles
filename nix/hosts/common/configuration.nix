@@ -136,6 +136,7 @@
     busybox
     chromium
     kitty
+    lazygit
     vim
     waybar
     wget
