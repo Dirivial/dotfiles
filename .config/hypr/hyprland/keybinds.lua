@@ -11,7 +11,7 @@ hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/grim
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/hyprsunset.sh"))
 hl.bind(mainMod .. " + period", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/emoji-selector.sh"))
 
-hl.bind(mainMod .. " + X", hl.dsp.exec_cmd("pkill waybar && waybar"))
+hl.bind(mainMod .. " + X", hl.dsp.exec_cmd("pkill -SIGUSR1 waybar || waybar"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind("ALT + L", hl.dsp.exec_cmd("wlogout -b 2"))
 
