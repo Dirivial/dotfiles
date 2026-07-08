@@ -11,6 +11,7 @@
     codex
     localsend
     networkmanager_dmenu
+    spotify
   ];
   
 }
