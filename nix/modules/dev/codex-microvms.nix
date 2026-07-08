@@ -226,17 +226,15 @@ in
 
     systemd.services = lib.mapAttrs' (
       name: vm:
-      lib.nameValuePair "microvm@${name}" {
-        path = [
-          pkgs.coreutils
-          pkgs.openssh
-        ];
+      lib.nameValuePair "microvm-virtiofsd@${name}" {
         preStart = lib.mkBefore ''
           install -d -m 0700 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.codexStateDirectory}
           install -d -m 0755 -o ${toString cfg.uid} -g ${toString cfg.gid} ${vm.workspace}
-          install -d -m 0700 ${vm.workspace}/ssh-host-keys
           if [ ! -e ${vm.workspace}/ssh-host-keys/ssh_host_ed25519_key ]; then
-            ssh-keygen -t ed25519 -N "" -f ${vm.workspace}/ssh-host-keys/ssh_host_ed25519_key
+            echo "Missing SSH host key for MicroVM ${name}: ${vm.workspace}/ssh-host-keys/ssh_host_ed25519_key" >&2
+            echo "Generate it manually with: mkdir -p ${vm.workspace}/ssh-host-keys" >&2
+            echo "Then run: ssh-keygen -t ed25519 -N "" -f ${vm.workspace}/ssh-host-keys/ssh_host_ed25519_key" >&2
+            exit 1
           fi
         '';
       }
