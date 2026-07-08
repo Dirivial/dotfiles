@@ -22,7 +22,7 @@
     ];
 
     vms.codex = {
-      workspace = "/home/alkade/codex-microvm";
+      workspace = "/home/alkade/microvm/codex";
       ipAddress = "192.168.83.10";
       tapId = "microvm10";
       mac = "02:00:00:00:10:10";
