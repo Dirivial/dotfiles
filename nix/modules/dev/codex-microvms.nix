@@ -160,6 +160,12 @@ in
       description = "Host directory mounted as the microVM user's CODEX_HOME.";
     };
 
+    hostCodexDirectory = lib.mkOption {
+      type = lib.types.str;
+      default = "/home/${cfg.userName}/.codex";
+      description = "Host Codex state directory used to seed auth/config into MicroVM CODEX_HOME.";
+    };
+
     defaultMem = lib.mkOption {
       type = lib.types.ints.positive;
       default = 4096;
@@ -240,6 +246,12 @@ in
         preStart = lib.mkBefore ''
           install -d -m 0700 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.codexStateDirectory}
           install -d -m 0755 -o ${toString cfg.uid} -g ${toString cfg.gid} ${vm.workspace}
+          if [ -e ${cfg.hostCodexDirectory}/auth.json ] && [ ! -e ${cfg.codexStateDirectory}/auth.json ]; then
+            install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.hostCodexDirectory}/auth.json ${cfg.codexStateDirectory}/auth.json
+          fi
+          if [ -e ${cfg.hostCodexDirectory}/config.toml ] && [ ! -e ${cfg.codexStateDirectory}/config.toml ]; then
+            install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.hostCodexDirectory}/config.toml ${cfg.codexStateDirectory}/config.toml
+          fi
           if [ ! -e ${vm.workspace}/ssh-host-keys/ssh_host_ed25519_key ]; then
             echo "Missing SSH host key for MicroVM ${name}: ${vm.workspace}/ssh-host-keys/ssh_host_ed25519_key" >&2
             echo "Generate it manually with: mkdir -p ${vm.workspace}/ssh-host-keys" >&2
