@@ -51,6 +51,11 @@ let
           description = "vCPU count assigned to the microVM.";
         };
 
+        vsockCid = lib.mkOption {
+          type = lib.types.ints.positive;
+          description = "Unique virtio-vsock context ID assigned to the microVM.";
+        };
+
         extraPackages = lib.mkOption {
           type = lib.types.listOf lib.types.package;
           default = [ ];
@@ -88,6 +93,7 @@ let
             mem
             tapId
             vcpu
+            vsockCid
             workspace
             ;
         })
@@ -223,6 +229,10 @@ in
       internalInterfaces = [ cfg.bridgeName ];
       externalInterface = cfg.externalInterface;
     };
+
+    networking.extraHosts = lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (name: vm: "${vm.ipAddress} ${name}-vm ${name}.microvm") cfg.vms
+    );
 
     systemd.services = lib.mapAttrs' (
       name: vm:

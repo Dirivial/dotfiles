@@ -25,6 +25,7 @@
     # mkdir -p /home/alkade/microvm/codex/ssh-host-keys
     # ssh-keygen -t ed25519 -N "" -f /home/alkade/microvm/codex/ssh-host-keys/ssh_host_ed25519_key
     vms.codex = {
+      vsockCid = 10;
       workspace = "/home/alkade/microvm/codex";
       ipAddress = "192.168.83.10";
       tapId = "microvm10";

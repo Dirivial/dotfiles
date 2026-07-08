@@ -16,6 +16,7 @@
   uid,
   userName,
   vcpu,
+  vsockCid,
   workspace,
 }:
 { lib, pkgs, ... }:
@@ -148,6 +149,7 @@ in
       }
     ];
     inherit hypervisor mem vcpu;
+    vsock.cid = vsockCid;
     socket = "control.socket";
   };
 }
