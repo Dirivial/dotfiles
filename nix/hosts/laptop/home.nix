@@ -13,5 +13,5 @@
     networkmanager_dmenu
     spotify
   ];
-  
+
 }
