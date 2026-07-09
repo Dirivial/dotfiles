@@ -126,8 +126,9 @@ in
     };
 
     externalInterface = lib.mkOption {
-      type = lib.types.str;
-      description = "Host network interface used for NAT egress from microVMs.";
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "Host network interface used for NAT egress from microVMs, or null to masquerade through the active default route.";
     };
 
     userName = lib.mkOption {

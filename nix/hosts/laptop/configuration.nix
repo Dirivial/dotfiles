@@ -16,7 +16,6 @@
 
   alkade.codexMicrovms = {
     enable = true;
-    externalInterface = "wlp2s0";
     authorizedKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKo63H0TZ3h0nxjwkzUrsUD0Y1COYjyroq9D73Ym9bNQ alkade@alkade"
     ];
