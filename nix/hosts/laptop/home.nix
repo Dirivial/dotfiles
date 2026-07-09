@@ -8,6 +8,7 @@
   alkade.hyprland.profile = "laptop";
 
   home.packages = with pkgs; [
+    bmaptool
     codex
     localsend
     networkmanager_dmenu
