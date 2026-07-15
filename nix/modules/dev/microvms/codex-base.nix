@@ -34,13 +34,30 @@ in
       git
       openssh
       ripgrep
+      cups
+      pkg-config
+      prek
       tmux
+      uv
       vim
       zsh
     ]
     ++ extraPackages;
 
-  environment.variables.CODEX_HOME = "${homeDirectory}/.codex";
+  environment.variables = {
+    CODEX_HOME = "${homeDirectory}/.codex";
+    PIP_CACHE_DIR = "/var/cache/${userName}/pip";
+    TMPDIR = "/var/tmp";
+    UV_CACHE_DIR = "/var/cache/${userName}/uv";
+  };
+
+  systemd.tmpfiles.rules = [
+    "d /var/cache/${userName} 0700 ${userName} ${userName} -"
+    "d /var/cache/${userName}/pip 0700 ${userName} ${userName} -"
+    "d /var/cache/${userName}/uv 0700 ${userName} ${userName} -"
+    "d /var/lib/nix-rw-store 0755 root root -"
+    "d /var/tmp 1777 root root -"
+  ];
 
   networking.hostName = hostName;
   networking.useDHCP = false;
@@ -51,6 +68,12 @@ in
     "8.8.8.8"
   ];
   networking.firewall.enable = false;
+
+  nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   system.stateVersion = stateVersion;
   systemd.network.enable = true;
@@ -131,12 +154,12 @@ in
   ];
 
   microvm = {
-    writableStoreOverlay = "/nix/.rw-store";
+    writableStoreOverlay = "/var/lib/nix-rw-store";
     volumes = [
       {
         mountPoint = "/var";
         image = "var-${name}.img";
-        size = 8192;
+        size = 16384;
       }
     ];
     shares = [

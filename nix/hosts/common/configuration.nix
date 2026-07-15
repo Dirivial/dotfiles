@@ -138,6 +138,7 @@
     alacritty
     busybox
     chromium
+    e2fsprogs
     kitty
     lazygit
     vim
