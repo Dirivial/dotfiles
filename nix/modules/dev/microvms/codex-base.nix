@@ -12,6 +12,7 @@
   mem,
   name,
   stateVersion,
+  swapSize,
   tapId,
   uid,
   userName,
@@ -68,6 +69,11 @@ in
     "8.8.8.8"
   ];
   networking.firewall.enable = false;
+
+  swapDevices = lib.optional (swapSize > 0) {
+    device = "/var/lib/swapfile";
+    size = swapSize;
+  };
 
   nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
   nix.settings.experimental-features = [

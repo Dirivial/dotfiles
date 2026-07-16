@@ -45,6 +45,12 @@ let
           description = "Memory in MiB assigned to the microVM.";
         };
 
+        swapSize = lib.mkOption {
+          type = lib.types.ints.unsigned;
+          default = cfg.defaultSwapSize;
+          description = "Swapfile size in MiB configured inside the microVM. Set to 0 to disable swap.";
+        };
+
         vcpu = lib.mkOption {
           type = lib.types.ints.positive;
           default = cfg.defaultVcpu;
@@ -91,6 +97,7 @@ let
             ipAddress
             mac
             mem
+            swapSize
             tapId
             vcpu
             vsockCid
@@ -169,8 +176,14 @@ in
 
     defaultMem = lib.mkOption {
       type = lib.types.ints.positive;
-      default = 4096;
+      default = 8192;
       description = "Default memory in MiB assigned to each Codex microVM.";
+    };
+
+    defaultSwapSize = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      default = 4096;
+      description = "Default swapfile size in MiB configured inside each Codex microVM. Set to 0 to disable swap.";
     };
 
     defaultVcpu = lib.mkOption {
