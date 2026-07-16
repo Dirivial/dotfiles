@@ -35,6 +35,7 @@ in
       codexWithBypass
       age
       curl
+      gcc
       git
       jq
       nixfmt
@@ -46,6 +47,7 @@ in
       sops
       ssh-to-age
       cups
+      cups.dev
       pkg-config
       prek
       tmux
