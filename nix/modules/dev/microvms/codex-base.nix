@@ -32,9 +32,18 @@ in
     with pkgs;
     [
       codexWithBypass
+      age
+      curl
       git
+      jq
+      nixfmt
       openssh
+      postgresql_17
+      python314
       ripgrep
+      shellcheck
+      sops
+      ssh-to-age
       cups
       pkg-config
       prek
@@ -50,6 +59,9 @@ in
     PIP_CACHE_DIR = "/var/cache/${userName}/pip";
     TMPDIR = "/var/tmp";
     UV_CACHE_DIR = "/var/cache/${userName}/uv";
+    UV_LINK_MODE = "copy";
+    UV_PYTHON = "${pkgs.python314}/bin/python";
+    UV_PYTHON_DOWNLOADS = "never";
   };
 
   systemd.tmpfiles.rules = [
