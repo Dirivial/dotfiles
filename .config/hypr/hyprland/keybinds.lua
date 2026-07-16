@@ -13,6 +13,7 @@ hl.bind(mainMod .. " + period", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts
 
 hl.bind(mainMod .. " + X", hl.dsp.exec_cmd("pkill -SIGUSR1 waybar || waybar"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/clean-clipboard-indent.sh"))
 hl.bind("ALT + L", hl.dsp.exec_cmd("wlogout -b 2"))
 
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "l" }))
