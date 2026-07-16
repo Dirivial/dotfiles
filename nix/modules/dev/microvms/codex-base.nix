@@ -16,6 +16,7 @@
   tapId,
   uid,
   userName,
+  varSize,
   vcpu,
   vsockCid,
   workspace,
@@ -177,7 +178,7 @@ in
       {
         mountPoint = "/var";
         image = "var-${name}.img";
-        size = 16384;
+        size = varSize;
       }
     ];
     shares = [

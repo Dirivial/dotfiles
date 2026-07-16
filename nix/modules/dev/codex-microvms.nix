@@ -51,6 +51,12 @@ let
           description = "Swapfile size in MiB configured inside the microVM. Set to 0 to disable swap.";
         };
 
+        varSize = lib.mkOption {
+          type = lib.types.ints.positive;
+          default = cfg.defaultVarSize;
+          description = "Persistent /var volume size in MiB for the microVM.";
+        };
+
         vcpu = lib.mkOption {
           type = lib.types.ints.positive;
           default = cfg.defaultVcpu;
@@ -99,6 +105,7 @@ let
             mem
             swapSize
             tapId
+            varSize
             vcpu
             vsockCid
             workspace
@@ -184,6 +191,12 @@ in
       type = lib.types.ints.unsigned;
       default = 4096;
       description = "Default swapfile size in MiB configured inside each Codex microVM. Set to 0 to disable swap.";
+    };
+
+    defaultVarSize = lib.mkOption {
+      type = lib.types.ints.positive;
+      default = 65536;
+      description = "Default persistent /var volume size in MiB for each Codex microVM.";
     };
 
     defaultVcpu = lib.mkOption {
