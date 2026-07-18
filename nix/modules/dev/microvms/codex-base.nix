@@ -152,6 +152,8 @@ in
       export EDITOR="vim"
       path+=("$PNPM_HOME" "$HOME/go/bin")
 
+      PROMPT="%F{red}[MICROVM:${hostName}]%f $PROMPT"
+
       if [[ -f "$HOME/.local/bin/env" ]]; then
         . "$HOME/.local/bin/env"
       fi
