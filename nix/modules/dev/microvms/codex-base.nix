@@ -48,6 +48,7 @@ in
       ssh-to-age
       cups
       cups.dev
+      cups.lib
       pkg-config
       prek
       tmux
@@ -58,7 +59,13 @@ in
     ++ extraPackages;
 
   environment.variables = {
+    CFLAGS = "-I${pkgs.cups.dev}/include";
+    C_INCLUDE_PATH = "${pkgs.cups.dev}/include";
     CODEX_HOME = "${homeDirectory}/.codex";
+    CPPFLAGS = "-I${pkgs.cups.dev}/include";
+    LDFLAGS = "-L${pkgs.cups.lib}/lib -Wl,-rpath,${pkgs.cups.lib}/lib";
+    LIBRARY_PATH = "${pkgs.cups.lib}/lib";
+    PKG_CONFIG_PATH = "${pkgs.cups.dev}/lib/pkgconfig";
     PIP_CACHE_DIR = "/var/cache/${userName}/pip";
     TMPDIR = "/var/tmp";
     UV_CACHE_DIR = "/var/cache/${userName}/uv";
