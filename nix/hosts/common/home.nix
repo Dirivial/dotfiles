@@ -36,6 +36,7 @@
     pavucontrol
     signal-cli
     signal-desktop
+    vesktop
     wl-clipboard
   ];
 
