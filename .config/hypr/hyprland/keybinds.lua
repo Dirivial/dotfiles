@@ -13,8 +13,21 @@ hl.bind(mainMod .. " + period", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts
 
 hl.bind(mainMod .. " + X", hl.dsp.exec_cmd("pkill -SIGUSR1 waybar || waybar"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
-hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/clean-clipboard-indent.sh"))
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.submap("clean-clipboard-indent"))
 hl.bind("ALT + L", hl.dsp.exec_cmd("wlogout -b 2"))
+
+local cleanClipboardIndentScript = "~/.config/hypr/hyprland/scripts/clean-clipboard-indent.sh"
+local function clean_clipboard_indent(mode)
+    return hl.dsp.exec_cmd("hyprctl dispatch submap reset && " .. cleanClipboardIndentScript .. " " .. mode)
+end
+
+hl.define_submap("clean-clipboard-indent", function()
+    hl.bind("A", clean_clipboard_indent("trim-lines"))
+    hl.bind("S", clean_clipboard_indent("trim-start"))
+    hl.bind("T", clean_clipboard_indent("remove-two-spaces"))
+    hl.bind("escape", hl.dsp.submap("reset"))
+    hl.bind("CTRL + C", hl.dsp.submap("reset"))
+end)
 
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "l" }))
 hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "r" }))

@@ -102,21 +102,29 @@ restore_clipboard() {
 }
 
 clean_clipboard_text() {
-  python3 -c '
+  local mode="$1"
+
+  python3 - "$mode" <<'PY'
 import sys
 
+mode = sys.argv[1]
 data = sys.stdin.buffer.read()
 lines = data.splitlines(keepends=True)
-non_empty = [line for line in lines if line.rstrip(b"\r\n")]
 
-if non_empty and all(line.startswith(b"  ") for line in non_empty):
+if mode == "trim-start":
+    data = data.lstrip(b" \t\r\n")
+elif mode == "trim-lines":
+    data = b"".join(line.lstrip(b" \t") for line in lines)
+elif mode == "remove-two-spaces":
     data = b"".join(
-        line[2:] if line.rstrip(b"\r\n") else line
+        line[2:] if line.startswith(b"  ") else line[1:] if line.startswith(b" ") else line
         for line in lines
     )
+else:
+    raise SystemExit(f"Unknown clean mode: {mode}")
 
 sys.stdout.buffer.write(data)
-'
+PY
 }
 
 require_command python3
@@ -124,6 +132,7 @@ require_command wl-copy
 require_command wl-paste
 require_command hyprctl
 
+clean_mode="${1:-remove-two-spaces}"
 ACTIVE_WINDOW_CLASS="$(active_window_class)"
 original_file="$(mktemp)"
 cleaned_file="$(mktemp)"
@@ -141,7 +150,7 @@ if [[ -z "$original_mime" ]]; then
   exit 0
 fi
 
-clean_clipboard_text < "$original_file" > "$cleaned_file"
+clean_clipboard_text "$clean_mode" < "$original_file" > "$cleaned_file"
 wl-copy --type text/plain < "$cleaned_file"
 rm -f "$cleaned_file"
 
