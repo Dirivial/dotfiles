@@ -11,6 +11,7 @@
     gofumpt
     golangci-lint
     gopls
+    jq
     lua-language-server
     markdownlint-cli
     nil
