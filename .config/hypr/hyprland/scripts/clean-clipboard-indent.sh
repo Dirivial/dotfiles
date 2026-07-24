@@ -17,6 +17,10 @@ read_clipboard() {
   wl-paste --type "$mime_type" 2>/dev/null || return 1
 }
 
+reset_submap() {
+  hyprctl dispatch submap reset >/dev/null 2>&1 || true
+}
+
 active_window_class() {
   hyprctl activewindow 2>/dev/null | awk -F': ' '$1 ~ /^[[:space:]]*class$/ { print $2; exit }' || true
 }
@@ -133,6 +137,7 @@ require_command wl-paste
 require_command hyprctl
 
 clean_mode="${1:-remove-two-spaces}"
+reset_submap
 ACTIVE_WINDOW_CLASS="$(active_window_class)"
 original_file="$(mktemp)"
 cleaned_file="$(mktemp)"

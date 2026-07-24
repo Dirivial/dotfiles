@@ -18,13 +18,16 @@ hl.bind("ALT + L", hl.dsp.exec_cmd("wlogout -b 2"))
 
 local cleanClipboardIndentScript = "~/.config/hypr/hyprland/scripts/clean-clipboard-indent.sh"
 local function clean_clipboard_indent(mode)
-    return hl.dsp.exec_cmd("hyprctl dispatch submap reset && " .. cleanClipboardIndentScript .. " " .. mode)
+    return hl.dsp.exec_cmd(cleanClipboardIndentScript .. " " .. mode)
 end
 
 hl.define_submap("clean-clipboard-indent", function()
     hl.bind("A", clean_clipboard_indent("trim-lines"))
+    hl.bind("a", clean_clipboard_indent("trim-lines"))
     hl.bind("S", clean_clipboard_indent("trim-start"))
+    hl.bind("s", clean_clipboard_indent("trim-start"))
     hl.bind("T", clean_clipboard_indent("remove-two-spaces"))
+    hl.bind("t", clean_clipboard_indent("remove-two-spaces"))
     hl.bind("escape", hl.dsp.submap("reset"))
     hl.bind("CTRL + C", hl.dsp.submap("reset"))
 end)
