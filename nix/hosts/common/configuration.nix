@@ -136,6 +136,7 @@
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     alacritty
+    bubblewrap
     busybox
     chromium
     e2fsprogs
