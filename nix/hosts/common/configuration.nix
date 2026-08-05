@@ -5,7 +5,14 @@
   inputs,
   ...
 }:
-
+let
+  nativeCompatLibraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+    libGL
+    glib
+  ];
+in
 {
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -81,7 +88,10 @@
 
   programs.firefox.enable = true;
   programs.zsh.enable = true;
-  programs.nix-ld.enable = true;
+  programs.nix-ld = {
+    enable = true;
+    libraries = nativeCompatLibraries;
+  };
   virtualisation.podman.enable = true;
   programs.regreet = {
     enable = true;
@@ -115,7 +125,10 @@
     "electron-39.8.10"
   ];
 
-  environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
+  environment.sessionVariables = {
+    LD_LIBRARY_PATH = lib.makeLibraryPath nativeCompatLibraries;
+    SHELL = "${pkgs.zsh}/bin/zsh";
+  };
 
   programs.hyprland = {
     enable = true;

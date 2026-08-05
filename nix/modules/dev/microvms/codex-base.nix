@@ -27,6 +27,13 @@ let
   codexWithBypass = pkgs.writeShellScriptBin "codex" ''
     exec ${pkgs.codex}/bin/codex --dangerously-bypass-approvals-and-sandbox "$@"
   '';
+  nativeCompatLibraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+    libGL
+    glib
+  ];
+  nativeCompatLibraryPath = lib.makeLibraryPath nativeCompatLibraries;
 in
 {
   environment.systemPackages =
@@ -58,12 +65,18 @@ in
     ]
     ++ extraPackages;
 
+  programs.nix-ld = {
+    enable = true;
+    libraries = nativeCompatLibraries;
+  };
+
   environment.variables = {
     CFLAGS = "-I${pkgs.cups.dev}/include";
     C_INCLUDE_PATH = "${pkgs.cups.dev}/include";
     CODEX_HOME = "${homeDirectory}/.codex";
     CPPFLAGS = "-I${pkgs.cups.dev}/include";
     LDFLAGS = "-L${pkgs.cups.lib}/lib -Wl,-rpath,${pkgs.cups.lib}/lib";
+    LD_LIBRARY_PATH = nativeCompatLibraryPath;
     LIBRARY_PATH = "${pkgs.cups.lib}/lib";
     PKG_CONFIG_PATH = "${pkgs.cups.dev}/lib/pkgconfig";
     PIP_CACHE_DIR = "/var/cache/${userName}/pip";
