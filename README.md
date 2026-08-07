@@ -32,3 +32,17 @@ sudo pacman -S --needed git base-devel && git clone <https://aur.archlinux.org/y
 - git clone <https://github.com/tmux-plugins/tpm> ~/.tmux/plugins/tpm
 - tmux source ~/.tmux.conf
 - (Ctrl + a) -> (Shift + i) to install plugins
+
+## Codex Accounts
+
+The Nix home setup installs `codex-account` and zsh helpers for switching
+between Codex accounts without re-login loops.
+
+- `codex-use personal` uses the existing `~/.codex`
+- `codex-use work` uses `~/.codex-work`
+- `codex-work login` logs in the work account the first time
+- `codex-account list` shows which account is active
+
+Inside the Codex microVM, `personal` stays on the mounted `~/.codex` state and
+`work` lives under `~/.codex/accounts/work`, so switching accounts does not
+change the VM mount source.

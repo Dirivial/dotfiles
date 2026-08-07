@@ -13,6 +13,7 @@
     localsend
     networkmanager_dmenu
     spotify
+    transmission_4-gtk
   ];
 
 }

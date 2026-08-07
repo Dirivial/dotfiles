@@ -1,0 +1,263 @@
+# shellcheck shell=bash
+set -euo pipefail
+
+active_file="${CODEX_ACCOUNT_ACTIVE_FILE:-${XDG_STATE_HOME:-$HOME/.local/state}/codex/account}"
+custom_accounts_dir="${CODEX_ACCOUNTS_DIR:-$HOME/.codex-accounts}"
+
+usage() {
+    cat <<'EOF'
+Usage:
+  codex-account use <account>       Set the default Codex account for new shells
+  codex-account current             Print the active account name
+  codex-account home [account]      Print an account's CODEX_HOME
+  codex-account list                List known account homes
+  codex-account init <account>      Create an account home
+  codex-account run <account> [...] Run Codex with a specific account
+  codex-account exec [...]          Run Codex with the active account
+  codex-account login <account>     Log in to a specific account
+  codex-account status [account]    Show login status for an account
+  codex-account shell-init          Print shell functions for interactive use
+
+Built-in accounts:
+  personal -> CODEX_PERSONAL_HOME or ~/.codex
+  work     -> CODEX_WORK_HOME or ~/.codex-work
+
+Extra account names are stored under CODEX_ACCOUNTS_DIR or ~/.codex-accounts/<name>.
+EOF
+}
+
+die() {
+    printf 'codex-account: %s\n' "$*" >&2
+    exit 1
+}
+
+validate_account() {
+    local account="$1"
+
+    [[ -n "$account" ]] || die "missing account name"
+    [[ "$account" =~ ^[A-Za-z0-9._-]+$ ]] || die "invalid account name: $account"
+    [[ "$account" != "." && "$account" != ".." ]] || die "invalid account name: $account"
+}
+
+account_home() {
+    local account="$1"
+
+    validate_account "$account"
+
+    case "$account" in
+        personal)
+            printf '%s\n' "${CODEX_PERSONAL_HOME:-$HOME/.codex}"
+            ;;
+        work)
+            printf '%s\n' "${CODEX_WORK_HOME:-$HOME/.codex-work}"
+            ;;
+        *)
+            printf '%s\n' "$custom_accounts_dir/$account"
+            ;;
+    esac
+}
+
+current_account() {
+    if [[ -f "$active_file" ]]; then
+        local account
+        IFS= read -r account <"$active_file" || true
+        if [[ -n "${account:-}" ]]; then
+            validate_account "$account"
+            printf '%s\n' "$account"
+            return
+        fi
+    fi
+
+    printf '%s\n' personal
+}
+
+copy_base_config() {
+    local home="$1"
+    local base_config="${CODEX_BASE_CONFIG:-$HOME/.codex/config.toml}"
+
+    if [[ ! -e "$home/config.toml" && -f "$base_config" && "$home/config.toml" != "$base_config" ]]; then
+        cp -p "$base_config" "$home/config.toml"
+    fi
+}
+
+ensure_account_home() {
+    local account="$1"
+    local home
+
+    home="$(account_home "$account")"
+    mkdir -p "$home"
+    chmod 700 "$home"
+    copy_base_config "$home"
+    printf '%s\n' "$home"
+}
+
+codex_bin() {
+    local bin
+
+    bin="$(command -v codex || true)"
+    [[ -n "$bin" ]] || die "codex is not in PATH"
+    printf '%s\n' "$bin"
+}
+
+run_codex() {
+    local account="$1"
+    shift
+
+    local home bin
+    home="$(ensure_account_home "$account")"
+    bin="$(codex_bin)"
+
+    CODEX_HOME="$home" exec "$bin" -c 'cli_auth_credentials_store="file"' "$@"
+}
+
+cmd_use() {
+    local account="${1:-}"
+    local home
+
+    validate_account "$account"
+    home="$(ensure_account_home "$account")"
+    mkdir -p "$(dirname "$active_file")"
+    printf '%s\n' "$account" >"$active_file"
+
+    printf 'Active Codex account: %s\n' "$account"
+    printf 'CODEX_HOME=%s\n' "$home"
+}
+
+cmd_list() {
+    local current account home marker auth
+    current="$(current_account)"
+
+    for account in personal work; do
+        home="$(account_home "$account")"
+        marker=" "
+        [[ "$account" == "$current" ]] && marker="*"
+        auth="not logged in"
+        [[ -e "$home/auth.json" ]] && auth="auth.json"
+        printf '%s %-16s %s (%s)\n' "$marker" "$account" "$home" "$auth"
+    done
+
+    if [[ -d "$custom_accounts_dir" ]]; then
+        shopt -s nullglob
+        local path
+        for path in "$custom_accounts_dir"/*; do
+            [[ -d "$path" ]] || continue
+            account="$(basename "$path")"
+            [[ "$account" == "personal" || "$account" == "work" ]] && continue
+            marker=" "
+            [[ "$account" == "$current" ]] && marker="*"
+            auth="not logged in"
+            [[ -e "$path/auth.json" ]] && auth="auth.json"
+            printf '%s %-16s %s (%s)\n' "$marker" "$account" "$path" "$auth"
+        done
+    fi
+}
+
+cmd_status() {
+    local account="${1:-}"
+
+    if [[ -z "$account" ]]; then
+        account="$(current_account)"
+    fi
+
+    local home
+    home="$(ensure_account_home "$account")"
+    printf 'Account: %s\n' "$account"
+    printf 'CODEX_HOME=%s\n' "$home"
+
+    CODEX_HOME="$home" "$(codex_bin)" -c 'cli_auth_credentials_store="file"' login status
+}
+
+cmd_shell_init() {
+    cat <<'EOF'
+codex() {
+  codex-account exec "$@"
+}
+
+codex-use() {
+  if [[ $# -ne 1 ]]; then
+    echo "usage: codex-use <account>" >&2
+    return 2
+  fi
+
+  codex-account use "$1" || return
+  export CODEX_HOME="$(codex-account home "$1")"
+}
+
+codex-personal() {
+  codex-account run personal "$@"
+}
+
+codex-work() {
+  codex-account run work "$@"
+}
+EOF
+}
+
+main() {
+    local command="${1:-help}"
+
+    case "$command" in
+        help|-h|--help)
+            usage
+            ;;
+        use)
+            shift
+            [[ $# -eq 1 ]] || die "usage: codex-account use <account>"
+            cmd_use "$1"
+            ;;
+        current)
+            shift
+            [[ $# -eq 0 ]] || die "usage: codex-account current"
+            current_account
+            ;;
+        home)
+            shift
+            [[ $# -le 1 ]] || die "usage: codex-account home [account]"
+            account="${1:-$(current_account)}"
+            account_home "$account"
+            ;;
+        list)
+            shift
+            [[ $# -eq 0 ]] || die "usage: codex-account list"
+            cmd_list
+            ;;
+        init)
+            shift
+            [[ $# -eq 1 ]] || die "usage: codex-account init <account>"
+            ensure_account_home "$1"
+            ;;
+        run)
+            shift
+            [[ $# -ge 1 ]] || die "usage: codex-account run <account> [codex args...]"
+            account="$1"
+            shift
+            run_codex "$account" "$@"
+            ;;
+        exec)
+            shift
+            run_codex "$(current_account)" "$@"
+            ;;
+        login)
+            shift
+            [[ $# -ge 1 ]] || die "usage: codex-account login <account> [login args...]"
+            account="$1"
+            shift
+            run_codex "$account" login "$@"
+            ;;
+        status)
+            shift
+            [[ $# -le 1 ]] || die "usage: codex-account status [account]"
+            cmd_status "${1:-}"
+            ;;
+        shell-init)
+            shift
+            [[ $# -eq 0 ]] || die "usage: codex-account shell-init"
+            cmd_shell_init
+            ;;
+        *)
+            die "unknown command: $command"
+            ;;
+    esac
+}
+
+main "$@"

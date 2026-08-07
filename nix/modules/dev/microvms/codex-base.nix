@@ -24,8 +24,33 @@
 { lib, pkgs, ... }:
 let
   homeDirectory = "/home/${userName}";
+  codexDefaultHome = "${homeDirectory}/.codex";
+  codexAccountsDir = "${codexDefaultHome}/accounts";
+  codexActiveFile = "${codexDefaultHome}/active-account";
+  codexAccountEnv = ''
+    export CODEX_ACCOUNT_ACTIVE_FILE=${lib.escapeShellArg codexActiveFile}
+    export CODEX_PERSONAL_HOME=${lib.escapeShellArg codexDefaultHome}
+    export CODEX_WORK_HOME=${lib.escapeShellArg "${codexAccountsDir}/work"}
+    export CODEX_ACCOUNTS_DIR=${lib.escapeShellArg codexAccountsDir}
+    export CODEX_BASE_CONFIG=${lib.escapeShellArg "${codexDefaultHome}/config.toml"}
+  '';
+  codexAccount = pkgs.writeShellApplication {
+    name = "codex-account";
+    runtimeInputs = [ pkgs.coreutils ];
+    text = builtins.readFile ../../../../scripts/codex-account;
+  };
   codexWithBypass = pkgs.writeShellScriptBin "codex" ''
-    exec ${pkgs.codex}/bin/codex --dangerously-bypass-approvals-and-sandbox "$@"
+    set -euo pipefail
+
+    default_codex_home=${lib.escapeShellArg codexDefaultHome}
+    if [ -z "''${CODEX_HOME:-}" ] || [ "''${CODEX_HOME:-}" = "$default_codex_home" ]; then
+      ${codexAccountEnv}
+      account="$(${codexAccount}/bin/codex-account current 2>/dev/null || printf '%s\n' personal)"
+      CODEX_HOME="$(${codexAccount}/bin/codex-account init "$account")"
+      export CODEX_HOME
+    fi
+
+    exec ${pkgs.codex}/bin/codex --dangerously-bypass-approvals-and-sandbox -c 'cli_auth_credentials_store="file"' "$@"
   '';
   nativeCompatLibraries = with pkgs; [
     stdenv.cc.cc.lib
@@ -40,6 +65,7 @@ in
     with pkgs;
     [
       codexWithBypass
+      codexAccount
       age
       curl
       gcc
@@ -73,7 +99,12 @@ in
   environment.variables = {
     CFLAGS = "-I${pkgs.cups.dev}/include";
     C_INCLUDE_PATH = "${pkgs.cups.dev}/include";
-    CODEX_HOME = "${homeDirectory}/.codex";
+    CODEX_ACCOUNT_ACTIVE_FILE = codexActiveFile;
+    CODEX_ACCOUNTS_DIR = codexAccountsDir;
+    CODEX_BASE_CONFIG = "${codexDefaultHome}/config.toml";
+    CODEX_HOME = codexDefaultHome;
+    CODEX_PERSONAL_HOME = codexDefaultHome;
+    CODEX_WORK_HOME = "${codexAccountsDir}/work";
     CPPFLAGS = "-I${pkgs.cups.dev}/include";
     LDFLAGS = "-L${pkgs.cups.lib}/lib -Wl,-rpath,${pkgs.cups.lib}/lib";
     LD_LIBRARY_PATH = nativeCompatLibraryPath;
@@ -166,11 +197,15 @@ in
       custom = "${pkgs.oh-my-zsh}/share/oh-my-zsh/custom";
     };
     shellInit = ''
-      export CODEX_HOME=${homeDirectory}/.codex
+      ${codexAccountEnv}
+      codex_account_current="$(codex-account current 2>/dev/null || printf '%s\n' personal)"
+      export CODEX_HOME="$(codex-account init "$codex_account_current")"
       export PNPM_HOME="$HOME/.local/share/pnpm"
 
       export EDITOR="vim"
       path+=("$PNPM_HOME" "$HOME/go/bin")
+
+      eval "$(codex-account shell-init)"
 
       PROMPT="%F{red}[MICROVM:${hostName}]%f $PROMPT"
 
