@@ -31,6 +31,7 @@
     kdePackages.dolphin
     gimp
     hyprpicker
+    hyprshot
     hyprsunset
     obsidian
     pavucontrol
