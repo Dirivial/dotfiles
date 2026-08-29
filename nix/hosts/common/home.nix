@@ -26,17 +26,23 @@
 
   home.packages = with pkgs; [
     bitwarden-desktop
+    bmaptool
     brightnessctl
+    codex
     cursor-clip
-    kdePackages.dolphin
     gimp
     hyprpicker
     hyprshot
     hyprsunset
+    kdePackages.dolphin
+    localsend
+    networkmanager_dmenu
     obsidian
     pavucontrol
     signal-cli
     signal-desktop
+    spotify
+    transmission_4-gtk
     vesktop
     wl-clipboard
   ];
