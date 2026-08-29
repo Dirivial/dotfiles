@@ -129,7 +129,6 @@ in
   ];
 
   environment.sessionVariables = {
-    LD_LIBRARY_PATH = lib.makeLibraryPath nativeCompatLibraries;
     SHELL = "${pkgs.zsh}/bin/zsh";
   };
 
