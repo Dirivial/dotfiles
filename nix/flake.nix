@@ -2,10 +2,10 @@
   description = "NixOS with Hyprland";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixos-26.05";
     hyprland.url = "github:hyprwm/Hyprland";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     microvm = {
