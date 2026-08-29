@@ -95,6 +95,9 @@ in
   virtualisation.podman.enable = true;
   programs.regreet = {
     enable = true;
+    # ReGreet is a single-monitor application.  Cage otherwise extends it
+    # across every connected output, which breaks its pointer hit testing.
+    cageArgs = [ "-s" "-d" "-m" "last" ];
     settings = {
       background = {
         path = ../../../.config/hypr/hyprpaper/dark-forest-village.png;
