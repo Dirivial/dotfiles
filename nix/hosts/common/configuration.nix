@@ -119,6 +119,9 @@ in
       "nvidia-x11"
       "obsidian"
       "spotify"
+      "steam"
+      "steam-original"
+      "steam-unwrapped"
     ];
   nixpkgs.config.permittedInsecurePackages = [
     "electron-39.8.10"
