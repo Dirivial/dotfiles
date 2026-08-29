@@ -276,6 +276,10 @@ in
           if [ -e ${cfg.hostCodexDirectory}/auth.json ] && [ ! -e ${cfg.codexStateDirectory}/auth.json ]; then
             install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.hostCodexDirectory}/auth.json ${cfg.codexStateDirectory}/auth.json
           fi
+          install -d -m 0700 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.codexStateDirectory}/accounts/work
+          if [ -e /home/${cfg.userName}/.codex-work/auth.json ] && [ ! -e ${cfg.codexStateDirectory}/accounts/work/auth.json ]; then
+            install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} /home/${cfg.userName}/.codex-work/auth.json ${cfg.codexStateDirectory}/accounts/work/auth.json
+          fi
           if [ -e ${cfg.hostCodexDirectory}/config.toml ] && [ ! -e ${cfg.codexStateDirectory}/config.toml ]; then
             install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.hostCodexDirectory}/config.toml ${cfg.codexStateDirectory}/config.toml
           fi

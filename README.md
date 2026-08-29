@@ -45,4 +45,5 @@ between Codex accounts without re-login loops.
 
 Inside the Codex microVM, `personal` stays on the mounted `~/.codex` state and
 `work` lives under `~/.codex/accounts/work`, so switching accounts does not
-change the VM mount source.
+change the VM mount source. A host work login is seeded into that VM work
+profile when it is missing; existing VM credentials are left unchanged.
