@@ -114,7 +114,10 @@ in
 
   nixpkgs.config.allowUnfreePredicate =
     pkg:
-    builtins.elem (lib.getName pkg) [
+    let
+      name = lib.getName pkg;
+    in
+    builtins.elem name [
       "nvidia-settings"
       "nvidia-x11"
       "obsidian"
@@ -122,7 +125,10 @@ in
       "steam"
       "steam-original"
       "steam-unwrapped"
-    ];
+    ]
+    || lib.hasPrefix "cuda" name
+    || lib.hasPrefix "cudnn" name
+    || lib.hasPrefix "libcu" name;
   nixpkgs.config.permittedInsecurePackages = [
     "electron-39.8.10"
   ];

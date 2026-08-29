@@ -1,0 +1,11 @@
+# Replace immich.example.com with the actual DNS-only Cloudflare hostname.
+# Caddy must be reachable from the Internet on TCP 80 and 443 so it can obtain
+# and renew the certificate.
+immich.example.com {
+  reverse_proxy http://desktop.lan:2283 {
+    health_uri /api/server/ping
+    transport http {
+      dial_timeout 5s
+    }
+  }
+}

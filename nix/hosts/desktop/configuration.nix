@@ -9,7 +9,10 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/services/desktop-homelab.nix
   ];
+
+  alkade.desktopHomelab.enable = true;
 
   programs.steam.enable = true;
 
