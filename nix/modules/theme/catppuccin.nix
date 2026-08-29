@@ -4,8 +4,8 @@ let
   catppuccinYazi = pkgs.fetchFromGitHub {
     owner = "catppuccin";
     repo = "yazi";
-    rev = "main";
-    sha256 = "sha256-L6SApM07CSQk0znEsFP8WaxW+ZHcindXo612r1XcwIg=";
+    rev = "d62802be39210ea10e54b3e3b09735c6cb9e57c1";
+    sha256 = "sha256-bwzEO8exoBwa19q+jnYjHkaamGl2mhfukIEhDfUCRGI=";
   };
 in
 {
