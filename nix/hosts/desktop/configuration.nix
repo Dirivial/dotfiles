@@ -15,6 +15,7 @@
   alkade.desktopHomelab.enable = true;
 
   programs.steam.enable = true;
+  programs.gamescope.enable = true;
 
   # Ada Lovelace desktop GPU.  The RTX 4080 is supported by Nvidia's open
   # kernel module; the proprietary user-space driver is still used.
