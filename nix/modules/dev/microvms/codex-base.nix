@@ -197,6 +197,19 @@ in
     openssh.authorizedKeys.keys = authorizedKeys;
   };
   security.sudo.wheelNeedsPassword = false;
+  programs.bash = {
+    enable = true;
+    loginShellInit = ''
+      if [ "$USER" = ${lib.escapeShellArg userName} ] && [ -d ${lib.escapeShellArg workspace} ]; then
+        cd ${lib.escapeShellArg workspace}
+      fi
+    '';
+    interactiveShellInit = ''
+      if [ "$USER" = ${lib.escapeShellArg userName} ] && [ -d ${lib.escapeShellArg workspace} ]; then
+        cd ${lib.escapeShellArg workspace}
+      fi
+    '';
+  };
 
   systemd.settings.Manager.DefaultTimeoutStopSec = "5s";
   systemd.mounts = [
