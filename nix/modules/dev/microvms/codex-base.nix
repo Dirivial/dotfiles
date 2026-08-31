@@ -55,12 +55,10 @@ let
   '';
   codexPersonal = pkgs.writeShellScriptBin "codex-personal" ''
     ${codexAccountEnv}
-    cd ${lib.escapeShellArg workspace}
     exec ${codexAccount}/bin/codex-account run personal "$@"
   '';
   codexWork = pkgs.writeShellScriptBin "codex-work" ''
     ${codexAccountEnv}
-    cd ${lib.escapeShellArg workspace}
     exec ${codexAccount}/bin/codex-account run work "$@"
   '';
   nativeCompatLibraries = with pkgs; [
