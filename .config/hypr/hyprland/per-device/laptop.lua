@@ -50,11 +50,12 @@ hl.workspace_rule({
 hl.workspace_rule({
     workspace = "2",
     persistent = true,
+    on_created_empty = "Alacritty",
 })
 hl.workspace_rule({
     workspace = "3",
     persistent = true,
-    on_created_empty = "Alacritty",
+    on_created_empty = "chromium",
 })
 
 for _, workspace in ipairs({ "4", "5" }) do

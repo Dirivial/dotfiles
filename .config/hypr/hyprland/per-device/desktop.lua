@@ -32,14 +32,14 @@ hl.workspace_rule({
 hl.workspace_rule({
     workspace = "2",
     monitor = "desc:Samsung Electric Company Odyssey G85SB H1AK500000",
-    on_created_empty = "zen-browser",
+    on_created_empty = "Alacritty",
     persistent = true,
 })
 hl.workspace_rule({
     workspace = "3",
     monitor = "desc:Samsung Electric Company Odyssey G85SB H1AK500000",
     default = true,
-    on_created_empty = "Alacritty",
+    on_created_empty = "chromium",
     persistent = true,
 })
 
