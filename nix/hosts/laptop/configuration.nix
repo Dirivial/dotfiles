@@ -40,13 +40,13 @@
     ];
 
     # Before starting this VM, generate its host key manually:
-    # mkdir -p /home/alkade/microvm/codex/ssh-host-keys
-    # ssh-keygen -t ed25519 -N "" -f /home/alkade/microvm/codex/ssh-host-keys/ssh_host_ed25519_key
+    # mkdir -p /home/alkade/.local/state/microvm/codex/ssh-host-keys
+    # ssh-keygen -t ed25519 -N "" -f /home/alkade/.local/state/microvm/codex/ssh-host-keys/ssh_host_ed25519_key
     vms.codex = {
       mem = 4096;
       swapSize = 8192;
       vsockCid = 10;
-      workspace = "/home/alkade/microvm/codex";
+      workspace = "/home/alkade/workspace";
       ipAddress = "192.168.83.10";
       tapId = "microvm10";
       mac = "02:00:00:00:10:10";

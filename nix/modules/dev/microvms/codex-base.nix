@@ -11,6 +11,7 @@
   mac,
   mem,
   name,
+  sshHostKeysDirectory,
   stateVersion,
   swapSize,
   tapId,
@@ -250,7 +251,7 @@ in
       {
         proto = "virtiofs";
         tag = "ssh-keys-${name}";
-        source = "${workspace}/ssh-host-keys";
+        source = sshHostKeysDirectory;
         mountPoint = "/etc/ssh/host-keys";
       }
       {

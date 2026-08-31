@@ -27,7 +27,7 @@
       swapSize = 8192;
       varSize = 65536;
       vsockCid = 10;
-      workspace = "/home/alkade/microvm/codex";
+      workspace = "/home/alkade/workspace";
       ipAddress = "192.168.83.10";
       tapId = "microvm10";
       mac = "02:00:00:00:10:10";
