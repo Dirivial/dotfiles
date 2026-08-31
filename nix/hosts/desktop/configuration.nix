@@ -9,10 +9,30 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/dev/codex-microvms.nix
     ../../modules/services/desktop-homelab.nix
   ];
 
   alkade.desktopHomelab.enable = true;
+
+  alkade.codexMicrovms = {
+    enable = true;
+    authorizedKeys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDCbqvnbXHoMUhKyC/RxG/cIhQvkxW3ERJoOM6mYjete alkade@alkade"
+    ];
+
+    vms.codex = {
+      mem = 12288;
+      vcpu = 12;
+      swapSize = 8192;
+      varSize = 65536;
+      vsockCid = 10;
+      workspace = "/home/alkade/microvm/codex";
+      ipAddress = "192.168.83.10";
+      tapId = "microvm10";
+      mac = "02:00:00:00:10:10";
+    };
+  };
 
   programs.steam.enable = true;
   programs.gamescope.enable = true;
