@@ -14,6 +14,18 @@
     openFirewall = true;
   };
 
+  services.syncthing = {
+    enable = true;
+    user = "alkade";
+    group = "users";
+    dataDir = "/home/alkade";
+    configDir = "/home/alkade/.config/syncthing";
+    guiAddress = "127.0.0.1:8384";
+    openDefaultPorts = true;
+    overrideDevices = false;
+    overrideFolders = false;
+  };
+
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   nix.settings.extra-platforms = [
