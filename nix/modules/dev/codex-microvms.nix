@@ -265,7 +265,7 @@ in
     };
 
     networking.extraHosts = lib.concatStringsSep "\n" (
-      lib.mapAttrsToList (name: vm: "${vm.ipAddress} ${name}-vm ${name}.microvm") cfg.vms
+      lib.mapAttrsToList (name: vm: "${vm.ipAddress} ${name}.microvm") cfg.vms
     );
 
     systemd.services = lib.mapAttrs' (

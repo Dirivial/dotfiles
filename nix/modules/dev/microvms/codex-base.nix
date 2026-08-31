@@ -53,6 +53,16 @@ let
 
     exec ${pkgs.codex}/bin/codex --dangerously-bypass-approvals-and-sandbox -c 'cli_auth_credentials_store="file"' "$@"
   '';
+  codexPersonal = pkgs.writeShellScriptBin "codex-personal" ''
+    ${codexAccountEnv}
+    cd ${lib.escapeShellArg workspace}
+    exec ${codexAccount}/bin/codex-account run personal "$@"
+  '';
+  codexWork = pkgs.writeShellScriptBin "codex-work" ''
+    ${codexAccountEnv}
+    cd ${lib.escapeShellArg workspace}
+    exec ${codexAccount}/bin/codex-account run work "$@"
+  '';
   nativeCompatLibraries = with pkgs; [
     stdenv.cc.cc.lib
     zlib
@@ -67,6 +77,8 @@ in
     [
       codexWithBypass
       codexAccount
+      codexPersonal
+      codexWork
       age
       curl
       gcc
@@ -88,7 +100,6 @@ in
       tmux
       uv
       vim
-      zsh
     ]
     ++ extraPackages;
 
@@ -182,45 +193,10 @@ in
     home = homeDirectory;
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    shell = pkgs.zsh;
+    shell = pkgs.bashInteractive;
     openssh.authorizedKeys.keys = authorizedKeys;
   };
   security.sudo.wheelNeedsPassword = false;
-  programs.zsh = {
-    enable = true;
-    ohMyZsh = {
-      enable = true;
-      theme = "crunch";
-      plugins = [
-        "git"
-        "tmux"
-      ];
-      custom = "${pkgs.oh-my-zsh}/share/oh-my-zsh/custom";
-    };
-    shellInit = ''
-      ${codexAccountEnv}
-      codex_account_current="$(codex-account current 2>/dev/null || printf '%s\n' personal)"
-      export CODEX_HOME="$(codex-account init "$codex_account_current")"
-      export PNPM_HOME="$HOME/.local/share/pnpm"
-
-      export EDITOR="vim"
-      path+=("$PNPM_HOME" "$HOME/go/bin")
-
-      eval "$(codex-account shell-init)"
-
-      PROMPT="%F{red}[MICROVM:${hostName}]%f $PROMPT"
-
-      if [[ -f "$HOME/.local/bin/env" ]]; then
-        . "$HOME/.local/bin/env"
-      fi
-
-      if [ "$USER" = ${lib.escapeShellArg userName} ] && [ -d ${lib.escapeShellArg workspace} ]; then
-        cd ${lib.escapeShellArg workspace}
-      fi
-
-      ${extraShellInit}
-    '';
-  };
 
   systemd.settings.Manager.DefaultTimeoutStopSec = "5s";
   systemd.mounts = [
