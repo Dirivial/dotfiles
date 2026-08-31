@@ -277,11 +277,14 @@ in
         preStart = lib.mkBefore ''
           install -d -m 0700 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.codexStateDirectory}
           install -d -m 0755 -o ${toString cfg.uid} -g ${toString cfg.gid} ${vm.workspace}
-          if [ -e ${cfg.hostCodexDirectory}/auth.json ] && [ ! -e ${cfg.codexStateDirectory}/auth.json ]; then
+          # The VM cannot complete the browser login flow itself. Re-seed its
+          # file-backed credentials from the host at every VM start so it does
+          # not retain a refresh token that the host has already rotated.
+          if [ -e ${cfg.hostCodexDirectory}/auth.json ]; then
             install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.hostCodexDirectory}/auth.json ${cfg.codexStateDirectory}/auth.json
           fi
           install -d -m 0700 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.codexStateDirectory}/accounts/work
-          if [ -e /home/${cfg.userName}/.codex-work/auth.json ] && [ ! -e ${cfg.codexStateDirectory}/accounts/work/auth.json ]; then
+          if [ -e /home/${cfg.userName}/.codex-work/auth.json ]; then
             install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} /home/${cfg.userName}/.codex-work/auth.json ${cfg.codexStateDirectory}/accounts/work/auth.json
           fi
           if [ -e ${cfg.hostCodexDirectory}/config.toml ] && [ ! -e ${cfg.codexStateDirectory}/config.toml ]; then
