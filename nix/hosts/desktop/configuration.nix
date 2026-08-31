@@ -13,6 +13,9 @@
     ../../modules/services/desktop-homelab.nix
   ];
 
+  networking.firewall.allowedTCPPorts = [ 53317 ];
+  networking.firewall.allowedUDPPorts = [ 53317 ];
+
   alkade.desktopHomelab.enable = true;
 
   alkade.codexMicrovms = {
