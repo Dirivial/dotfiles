@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+  whisperCuda ? false,
   ...
 }:
 let
@@ -12,6 +13,67 @@ let
     libGL
     glib
   ];
+  dictationPaste = pkgs.writeText "whisper-dictation-paste.py" ''
+    import json
+    import logging
+    import subprocess
+    import time
+
+    logger = logging.getLogger(__name__)
+    TERMINAL_CLASSES = {
+        "alacritty", "kitty", "foot", "ghostty", "wezterm",
+        "org.wezfurlong.wezterm", "com.mitchellh.ghostty",
+    }
+
+    class TextPaster:
+        def __init__(self, config):
+            self.config = config
+
+        @staticmethod
+        def active_window_class():
+            try:
+                result = subprocess.run(
+                    ["hyprctl", "activewindow", "-j"],
+                    capture_output=True, text=True, check=True,
+                )
+                return json.loads(result.stdout).get("class", "").lower()
+            except (OSError, ValueError, subprocess.CalledProcessError):
+                return ""
+
+        def paste(self, text):
+            if not text:
+                return
+            logger.info("Pasting text: %s...", text[:50])
+            time.sleep(self.config.get("typing.start_delay", 0.3))
+            subprocess.run(
+                ["wl-copy", "--trim-newline"],
+                input=text, text=True, check=True,
+            )
+            if self.active_window_class() in TERMINAL_CLASSES:
+                shortcut = [
+                    "wtype", "-M", "ctrl", "-M", "shift", "-k", "v",
+                    "-m", "shift", "-m", "ctrl",
+                ]
+            else:
+                shortcut = ["wtype", "-M", "ctrl", "-k", "v", "-m", "ctrl"]
+            subprocess.run(shortcut, check=True)
+            logger.info("Text pasted successfully")
+  '';
+  whisperCpp = pkgs.whisper-cpp.override { cudaSupport = whisperCuda; };
+  whisperDictationBase = inputs.whisper-dictation.lib.${pkgs.stdenv.hostPlatform.system}.mkWhisperDictation whisperCpp;
+  whisperDictation = whisperDictationBase.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace src/whisper_dictation/daemon.py \
+        --replace-fail \
+          "if configured_device in device.name or configured_device == device_path:" \
+          "if configured_device == device.name or configured_device == device_path:"
+      substituteInPlace src/whisper_dictation/recorder.py \
+        --replace-fail \
+          '"default",  # Default microphone' \
+          'self.config.get("audio_device", "default"),'
+      cp ${dictationPaste} src/whisper_dictation/paste.py
+    '';
+  });
 in
 {
   # Use the systemd-boot EFI boot loader.
@@ -77,9 +139,11 @@ in
     isNormalUser = true;
     shell = pkgs.zsh;
     extraGroups = [
+      "input"
       "wheel"
       "networkmanager"
       "video"
+      "ydotool"
     ];
     packages = with pkgs; [
       tree
@@ -87,6 +151,7 @@ in
   };
 
   programs.firefox.enable = true;
+  programs.ydotool.enable = true;
   programs.zsh.enable = true;
   programs.nix-ld = {
     enable = true;
@@ -166,7 +231,38 @@ in
     wget
     wofi
     zsh
+  ] ++ [
+    whisperDictation
   ];
+
+  systemd.user.services.whisper-dictation = {
+    description = "Local Whisper speech-to-text dictation";
+    after = [ "graphical-session.target" ];
+    wantedBy = [ "graphical-session.target" ];
+    path = [
+      pkgs.hyprland
+      pkgs.procps
+      pkgs.ydotool
+      pkgs.wl-clipboard
+      pkgs.wtype
+    ];
+    serviceConfig = {
+      Environment = [
+        "GI_TYPELIB_PATH=${lib.makeSearchPath "lib/girepository-1.0" [
+          pkgs.gdk-pixbuf
+          pkgs.graphene
+          pkgs.gtk4
+          pkgs.harfbuzz
+          pkgs.gobject-introspection
+          (lib.getLib pkgs.pango)
+        ]}"
+        "YDOTOOL_SOCKET=/run/ydotoold/socket"
+      ];
+      ExecStart = "${whisperDictation}/bin/whisper-dictation --verbose";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
 
   nix.settings.experimental-features = [
     "nix-command"

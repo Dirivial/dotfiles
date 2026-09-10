@@ -11,6 +11,9 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/grimshot.sh"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/hyprsunset.sh"))
 hl.bind(mainMod .. " + period", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/emoji-selector.sh"))
+-- whisper-dictation reads this key directly from evdev; consume it here so
+-- the focused application does not also receive a comma.
+hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd("true"))
 
 hl.bind(mainMod .. " + X", hl.dsp.exec_cmd("pkill -SIGUSR1 waybar || waybar"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())

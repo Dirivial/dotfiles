@@ -11,12 +11,19 @@
       url = "github:microvm-nix/microvm.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    whisper-dictation = {
+      url = "github:jacopone/whisper-dictation";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... } @ inputs: {
     nixosConfigurations = {
       laptop = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
+        specialArgs = {
+          inherit inputs;
+          whisperCuda = false;
+        };
         system = "x86_64-linux";
         modules = [
           ./hosts/common/configuration.nix
@@ -39,7 +46,10 @@
       };
 
       desktop = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
+        specialArgs = {
+          inherit inputs;
+          whisperCuda = true;
+        };
         system = "x86_64-linux";
         modules = [
           ./hosts/common/configuration.nix
