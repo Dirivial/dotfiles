@@ -158,22 +158,21 @@ in
     libraries = nativeCompatLibraries;
   };
   virtualisation.podman.enable = true;
-  programs.regreet = {
+  services.greetd = {
     enable = true;
-    # ReGreet is a single-monitor application.  Cage otherwise extends it
-    # across every connected output, which breaks its pointer hit testing.
-    cageArgs = [ "-s" "-d" "-m" "last" ];
-    settings = {
-      background = {
-        path = ../../../.config/hypr/hyprpaper/dark-forest-village.png;
-        fit = "Cover";
-      };
-      GTK.application_prefer_dark_theme = true;
-    };
-    font = {
-      package = pkgs.nerd-fonts.iosevka;
-      name = "Iosevka Nerd Font";
-      size = 16;
+    useTextGreeter = true;
+    settings.default_session = {
+      command = builtins.concatStringsSep " " [
+        (lib.getExe pkgs.tuigreet)
+        "--time"
+        "--asterisks"
+        "--remember"
+        "--greeting 'Welcome back'"
+        "--power-shutdown '${lib.getExe' pkgs.systemd "systemctl"} poweroff'"
+        "--power-reboot '${lib.getExe' pkgs.systemd "systemctl"} reboot'"
+        "--cmd '${lib.getExe' pkgs.hyprland "start-hyprland"}'"
+      ];
+      user = "greeter";
     };
   };
 
