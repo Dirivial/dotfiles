@@ -5,7 +5,6 @@
   inputs,
   ...
 }:
-
 {
   imports = [
     ./hardware-configuration.nix
@@ -17,6 +16,13 @@
   networking.firewall.allowedUDPPorts = [ 53317 ];
 
   alkade.desktopHomelab.enable = true;
+
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
+  nix.settings.extra-platforms = [
+    "x86_64-linux"
+    "aarch64-linux"
+  ];
 
   alkade.codexMicrovms = {
     enable = true;
