@@ -4,6 +4,13 @@ The desktop configuration enables Syncthing, Tailscale, Docker with the Nvidia
 container toolkit, Ollama with `qwen3:8b`, GPU-backed Wyoming Faster Whisper,
 Immich, and LiteLLM.
 
+OpenClaw and its Home Assistant conversation integration are a documented
+future phase, not part of this activation yet. The intended placement is
+OpenClaw on this RTX 4080 desktop, using local LiteLLM/Ollama, while Home
+Assistant on the Raspberry Pi remains the voice frontend and device-control
+authority. See the "Personal agent and Home Assistant tools" section in
+`docs/desktop-services-spec.md` before implementing it.
+
 Before switching the system, create the two root-owned secret files from the
 adjacent examples:
 

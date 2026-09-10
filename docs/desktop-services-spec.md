@@ -6,8 +6,9 @@ Turn the RTX 4080 desktop into a small, private home-service host for:
 
 1. a bidirectionally synced development workspace with the laptop;
 2. speech-to-text (STT) and text-to-speech (TTS) for Home Assistant;
-3. a GPU-backed Qwen API; and
-4. an Immich photo library that is reachable remotely from the phone.
+3. a GPU-backed Qwen API;
+4. a tool-using personal AI agent reached through Home Assistant Assist; and
+5. an Immich photo library that is reachable remotely from the phone.
 
 This design keeps the AI services private to the LAN. Immich is the only
 internet-facing application: Cloudflare provides DNS only, and Caddy on the
@@ -23,6 +24,9 @@ the private desktop origin.
 | Workspace sync | Syncthing between the desktop and laptop, over LAN and Tailscale. It is not a backup. |
 | Voice protocol | Wyoming: GPU STT on the desktop at TCP 10300, and Piper TTS locally on the Pi at TCP 10200. Add an OpenAI-compatible transcription endpoint only when a second client actually needs HTTP. |
 | LLM interface | Ollama serves a pinned Qwen model locally; LiteLLM exposes an authenticated OpenAI-compatible API to trusted LAN clients. |
+| Agent runtime | Run OpenClaw on the desktop, close to the GPU model and desktop-local data. Home Assistant on the Pi remains the voice frontend and device-control authority; its OpenClaw integration is only a lightweight remote client. |
+| Agent tools | Give OpenClaw built-in web tools, a narrowly scoped Home Assistant MCP connection, Music Assistant for Spotify, and purpose-built read-only adapters for approved desktop notifications or chats. Do not grant an unrestricted host shell or home-directory access. |
+| Availability | Advanced agent requests require the desktop to be awake. Retain Home Assistant's native intents as a Pi-local fallback for simple home control when the desktop is unavailable. |
 | Remote media access | Cloudflare DNS points one public Immich hostname to the home's public IP. Caddy on the Pi terminates HTTPS and reverse-proxies to the desktop's private Immich HTTP endpoint. No other desktop service is published. |
 | GPU policy | The Qwen API gets first claim on the GPU. STT and Immich ML are separately rate-limited/queued, rather than relying on all three workloads fitting at peak. |
 | Data protection | Immich originals and PostgreSQL receive independent, encrypted, off-host backups. Syncthing versioning protects workspace mistakes but is not a backup strategy. |
@@ -33,9 +37,15 @@ the private desktop origin.
 flowchart LR
   Laptop[Laptop] <-- Syncthing + Tailscale/LAN --> Desktop[Desktop: NixOS + RTX 4080]
 
-  HA[Home Assistant Pi] -->|Wyoming TCP 10300| STT[STT service]
-  HA -->|HTTPS + API key| LLM[LiteLLM proxy]
-  LLM --> Ollama[Ollama: Qwen]
+  Satellite[Voice satellite] --> HA[Home Assistant Assist on Pi]
+  HA -->|Wyoming TCP 10300| STT[CUDA STT service]
+  HA -->|authenticated agent connection| Agent[OpenClaw gateway on desktop]
+  Agent -->|loopback| LLM[LiteLLM proxy]
+  LLM -->|loopback| Ollama[Ollama: Qwen]
+  Agent -->|scoped MCP/API| HA
+  Agent --> Web[Web search and fetch]
+  Agent --> DesktopTools[Restricted desktop adapters]
+  HA --> Music[Music Assistant + Spotify]
   HA -->|Wyoming TCP 10200| TTS[Piper TTS on Pi]
   TTS --> Speakers[Voice satellite / media player]
 
@@ -45,6 +55,7 @@ flowchart LR
   Caddy -->|LAN HTTP; Pi-only firewall rule| Immich[Immich on desktop]
 
   Desktop --> STT
+  Desktop --> Agent
   Desktop --> Ollama
   Desktop --> Immich
   STT --> GPU[RTX 4080]
@@ -61,7 +72,7 @@ Reserve DHCP leases before implementation:
 | Name | Purpose | Required use |
 | --- | --- | --- |
 | `desktop.lan` | Desktop's stable LAN address | Pi reverse-proxy origin and LAN service clients |
-| `home-assistant.lan` | Pi's stable LAN address | Firewall source for STT, LLM, and Immich |
+| `home-assistant.lan` | Pi's stable LAN address | Firewall source for STT, OpenClaw, LLM, and Immich |
 | `immich.<domain>` | Public DNS name | The only public hostname |
 
 Do not use changing DHCP addresses in service configuration. Add the desktop to
@@ -78,6 +89,8 @@ router ports.
 | Wyoming Piper TTS | `127.0.0.1:10200` on Pi | Home Assistant on the same Pi | Loopback only |
 | LLM proxy | `desktop.lan:4000` | Pi and explicitly approved LAN clients | Per-client API key |
 | Ollama | `127.0.0.1:11434` | LiteLLM only | Not externally reachable |
+| OpenClaw gateway | `desktop.lan:18789` or loopback through a tunnel | Home Assistant Pi only | Gateway token, device identity, and source firewall; prefer Tailscale or an authenticated tunnel |
+| Home Assistant MCP | Pi-local endpoint, reachable from the desktop over the protected LAN path | OpenClaw service identity only | Dedicated long-lived HA token and explicitly exposed entities/tools |
 | Immich | `desktop.lan:2283` | Pi only | Firewall source restriction; Immich account auth |
 | Caddy | Pi TCP 80/443 | Public clients for `immich.<domain>` only | Public TLS; Immich account auth |
 
@@ -187,7 +200,106 @@ The implementation must expose the model name through `GET /v1/models` and
 serve `POST /v1/chat/completions` to a test client. It must record baseline
 tokens/second and VRAM use for the selected model.
 
-### 4. Immich and remote phone uploads
+### 4. Personal agent and Home Assistant tools
+
+**Responsibility split:** Home Assistant remains responsible for wake words,
+the Assist pipeline, entity state, deterministic device actions, and spoken
+delivery. OpenClaw supplies reasoning, memory, web research, longer-running
+work, and access to explicitly registered tools. Ollama/Qwen inference and
+OpenClaw both run on the RTX 4080 desktop; installing the Home Assistant
+integration on the Pi does not move model inference to the Pi.
+
+The intended request path is:
+
+```text
+voice satellite
+  -> Home Assistant Assist on Pi
+  -> Wyoming Faster Whisper on desktop
+  -> OpenClaw gateway on desktop
+  -> LiteLLM/Ollama on desktop
+  -> approved OpenClaw and Home Assistant tools
+  -> Home Assistant on Pi
+  -> Piper TTS on Pi
+  -> voice satellite
+```
+
+**OpenClaw deployment:** run a pinned OpenClaw release as a dedicated
+unprivileged service identity on the desktop. Keep its gateway private. Allow
+the Pi to connect through Tailscale, an authenticated SSH tunnel, or a
+Pi-source-restricted LAN listener. The Home Assistant OpenClaw integration is
+the conversation-agent client; it must not receive filesystem or shell access
+to the desktop.
+
+Configure OpenClaw to use the desktop's loopback LiteLLM endpoint. Start with
+Qwen locally, measure tool-selection accuracy, and retain the option of a
+stronger local model or an explicitly enabled cloud fallback for difficult
+multi-step tasks. Never silently send local chats, notifications, files, or
+their summaries to a cloud model.
+
+**Tool ownership:** expose capabilities through structured tools rather than
+general shell commands:
+
+| User request | Tool path |
+| --- | --- |
+| Search the web and summarize results | OpenClaw web search plus web fetch; require citations in factual answers |
+| Summarize a Wikipedia article | OpenClaw web fetch against the requested article |
+| Play a song, album, or playlist | OpenClaw calls an approved Home Assistant/Music Assistant search and play action |
+| Pause, resume, skip, or change volume | Home Assistant media-player actions against explicitly exposed players |
+| Control lights and other home devices | Home Assistant MCP/LLM API with only approved entities exposed |
+| Read desktop notifications | A small read-only adapter returning bounded recent notification data |
+| Read local chats | Service-specific, read-only adapters with explicit account and conversation allowlists |
+
+Use Music Assistant as the media abstraction. Connect Spotify as a Music
+Assistant provider, expose the intended player entities and search/play
+actions, and let Home Assistant execute playback. Prefer this over browser
+automation or controlling the graphical Spotify client with keystrokes.
+
+Home Assistant's LLM APIs can be served over MCP. Give OpenClaw a dedicated
+Home Assistant credential and the smallest useful tool collection. Keep native
+Home Assistant intents available for fast, reliable commands such as turning
+off a light or pausing playback; advanced research and personal-data requests
+can route to OpenClaw.
+
+**Desktop data boundary:** notification and chat access is not included merely
+by installing OpenClaw. Implement one adapter at a time. Each adapter must:
+
+- be read-only initially and run under its own least-privileged identity;
+- return bounded, structured results instead of raw database or home-directory
+  access;
+- allowlist applications, accounts, conversations, and lookback duration;
+- redact secrets and attachments by default;
+- log tool name and success/failure without logging message contents; and
+- require a separate design review before gaining send, delete, or reaction
+  capabilities.
+
+**Security defaults:** OpenClaw's general host execution and filesystem-write
+tools remain disabled. Enable sandboxing for web/browser work, use an isolated
+browser profile, store all tokens in SOPS/agenix-managed files, and require
+confirmation for consequential or external actions. Treat the gateway as a
+privileged control plane even when individual tools are restricted.
+
+**Fallback behavior:** if the desktop or OpenClaw is unavailable, Home
+Assistant should report that advanced assistance is offline and continue to
+handle a small allowlist of native home-control intents on the Pi. Piper stays
+on the Pi so failures can still be spoken.
+
+**Acceptance criteria:**
+
+- a voice request is transcribed on the desktop GPU, handled by OpenClaw using
+  the desktop-hosted model, and spoken through Piper;
+- web and Wikipedia summaries cite their source URLs;
+- named Spotify tracks and playlists can be searched and played through Music
+  Assistant, and playback/volume controls target the correct player;
+- OpenClaw can control only Home Assistant entities deliberately exposed to
+  its credential;
+- an allowed notification/chat query returns bounded results, while an
+  unapproved application or conversation is denied;
+- disabling the desktop gateway leaves basic native Home Assistant commands
+  functional; and
+- GPU use, request latency, tool calls, and denied calls are observable without
+  recording private prompt or message contents.
+
+### 5. Immich and remote phone uploads
 
 **Implementation:** use the native NixOS Immich module, with its configuration
 in this repository and runtime secrets in `/etc/immich/immich.env` (root-owned,
@@ -296,12 +408,20 @@ partitioning mechanism.
 4. **Voice:** deploy the reproducible CUDA Wyoming STT service on the desktop
    and Piper on the Pi; configure and test the full Home Assistant Assist
    pipeline. Add generic HTTP transcription only if required.
-5. **Immich LAN:** deploy Immich locally, create accounts, test library import,
+5. **Native control and media:** configure Home Assistant's exposed entities,
+   native fallback intents, Music Assistant, Spotify, and the intended players.
+6. **Agent:** deploy OpenClaw on the desktop with sandboxing and host execution
+   disabled; connect the HA conversation integration, LiteLLM, web tools, and a
+   scoped Home Assistant MCP credential.
+7. **Desktop context:** add notification and chat adapters individually, with
+   read-only permissions and explicit allowlists; do not bundle this into the
+   initial agent deployment.
+8. **Immich LAN:** deploy Immich locally, create accounts, test library import,
    backups, restore, and CUDA ML.
-6. **Remote Immich:** create the DNS-only Cloudflare record, forward TCP 80/443
+9. **Remote Immich:** create the DNS-only Cloudflare record, forward TCP 80/443
    to Caddy on the Pi, apply the desktop source firewall rule, then test phone
    upload and video behavior.
-7. **Handover:** document versions, service URLs, secret rotation, upgrade and
+10. **Handover:** document versions, service URLs, secret rotation, upgrade and
    recovery runbooks.
 
 ## Inputs required before implementation
@@ -316,6 +436,14 @@ partitioning mechanism.
   Home Assistant's Wyoming protocol.
 - Desired Qwen model quality versus latency, expected clients, and whether
   prompts/responses may be logged at all.
+- Whether OpenClaw should use local models exclusively or permit an explicit
+  cloud fallback, and which data classes may ever leave the LAN.
+- Spotify account/provider, Music Assistant host, target playback devices, and
+  preferred default player or area.
+- Which desktop notification applications and chat services may be read, which
+  conversations are allowed, and the maximum history window.
+- Whether the OpenClaw gateway will use Tailscale, an SSH tunnel, or a
+  Pi-source-restricted LAN listener.
 
 ## References
 
@@ -327,3 +455,8 @@ partitioning mechanism.
 - [Wyoming Piper](https://github.com/OHF-Voice/wyoming-piper) and
   [Home Assistant's Wyoming integration](https://www.home-assistant.io/integrations/wyoming/)
 - [OpenAI-compatible Faster Whisper Server](https://github.com/lightforgemedia/faster-whisper-server)
+- [OpenClaw tools and security](https://docs.openclaw.ai/tools) and
+  [sandboxing](https://docs.openclaw.ai/gateway/sandboxing)
+- [OpenClaw Voice Assistant for Home Assistant](https://github.com/ddrayne/openclaw-homeassistant)
+- [Home Assistant LLM API and MCP exposure](https://developers.home-assistant.io/docs/core/llm/)
+- [Home Assistant Music Assistant integration](https://www.home-assistant.io/integrations/music_assistant/)
