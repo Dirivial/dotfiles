@@ -80,7 +80,9 @@ in
       age
       curl
       gcc
+      gh
       git
+      graphite-cli
       jq
       nixfmt
       openssh

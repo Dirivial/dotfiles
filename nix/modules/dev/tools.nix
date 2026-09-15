@@ -16,6 +16,8 @@ in
     delve
     fd
     gcc
+    gh
+    graphite-cli
     gofumpt
     golangci-lint
     gopls
