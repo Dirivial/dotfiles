@@ -60,7 +60,9 @@ let
             logger.info("Text pasted successfully")
   '';
   whisperCpp = pkgs.whisper-cpp.override { cudaSupport = whisperCuda; };
-  whisperDictationBase = inputs.whisper-dictation.lib.${pkgs.stdenv.hostPlatform.system}.mkWhisperDictation whisperCpp;
+  whisperDictationBase =
+    inputs.whisper-dictation.lib.${pkgs.stdenv.hostPlatform.system}.mkWhisperDictation
+      whisperCpp;
   whisperDictation = whisperDictationBase.overrideAttrs (old: {
     postPatch = (old.postPatch or "") + ''
       substituteInPlace src/whisper_dictation/daemon.py \
@@ -182,6 +184,7 @@ in
       name = lib.getName pkg;
     in
     builtins.elem name [
+      "google-chrome"
       "nvidia-settings"
       "nvidia-x11"
       "obsidian"
@@ -217,22 +220,25 @@ in
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
-  environment.systemPackages = with pkgs; [
-    alacritty
-    bubblewrap
-    busybox
-    chromium
-    e2fsprogs
-    kitty
-    lazygit
-    vim
-    waybar
-    wget
-    wofi
-    zsh
-  ] ++ [
-    whisperDictation
-  ];
+  environment.systemPackages =
+    with pkgs;
+    [
+      alacritty
+      bubblewrap
+      busybox
+      chromium
+      e2fsprogs
+      kitty
+      lazygit
+      vim
+      waybar
+      wget
+      wofi
+      zsh
+    ]
+    ++ [
+      whisperDictation
+    ];
 
   systemd.user.services.whisper-dictation = {
     description = "Local Whisper speech-to-text dictation";
@@ -247,14 +253,16 @@ in
     ];
     serviceConfig = {
       Environment = [
-        "GI_TYPELIB_PATH=${lib.makeSearchPath "lib/girepository-1.0" [
-          pkgs.gdk-pixbuf
-          pkgs.graphene
-          pkgs.gtk4
-          pkgs.harfbuzz
-          pkgs.gobject-introspection
-          (lib.getLib pkgs.pango)
-        ]}"
+        "GI_TYPELIB_PATH=${
+          lib.makeSearchPath "lib/girepository-1.0" [
+            pkgs.gdk-pixbuf
+            pkgs.graphene
+            pkgs.gtk4
+            pkgs.harfbuzz
+            pkgs.gobject-introspection
+            (lib.getLib pkgs.pango)
+          ]
+        }"
         "YDOTOOL_SOCKET=/run/ydotoold/socket"
       ];
       ExecStart = "${whisperDictation}/bin/whisper-dictation --verbose";

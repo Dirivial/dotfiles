@@ -31,6 +31,7 @@
     codex
     cursor-clip
     gimp
+    google-chrome
     hyprpicker
     hyprshot
     hyprsunset
@@ -52,8 +53,15 @@
       modifiers:
         - super
       key: comma
-    input_device: ${if config.alkade.hyprland.profile == "desktop" then "Kinesis Kinesis Adv360" else "null"}
-    audio_device: ${if config.alkade.hyprland.profile == "desktop" then "alsa_input.usb-Shure_Inc_Shure_MV7-00.mono-fallback" else "default"}
+    input_device: ${
+      if config.alkade.hyprland.profile == "desktop" then "Kinesis Kinesis Adv360" else "null"
+    }
+    audio_device: ${
+      if config.alkade.hyprland.profile == "desktop" then
+        "alsa_input.usb-Shure_Inc_Shure_MV7-00.mono-fallback"
+      else
+        "default"
+    }
     whisper:
       model: base
       language: en
