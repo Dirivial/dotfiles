@@ -17,7 +17,7 @@ in
     fd
     gcc
     gh
-    graphite-cli
+    #graphite-cli
     gofumpt
     golangci-lint
     gopls

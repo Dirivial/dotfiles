@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -44,7 +45,7 @@
     signal-desktop
     spotify
     transmission_4-gtk
-    vesktop
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.vesktop
     wl-clipboard
   ];
 

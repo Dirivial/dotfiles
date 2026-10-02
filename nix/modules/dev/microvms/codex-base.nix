@@ -82,7 +82,7 @@ in
       gcc
       gh
       git
-      graphite-cli
+      #graphite-cli
       jq
       nixfmt
       openssh

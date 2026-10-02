@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.alkade.desktopHomelab;
@@ -49,7 +54,10 @@ in
     users.users.${sttUser} = {
       isSystemUser = true;
       group = sttUser;
-      extraGroups = [ "video" "render" ];
+      extraGroups = [
+        "video"
+        "render"
+      ];
     };
     users.groups.${sttUser} = { };
 
@@ -79,7 +87,7 @@ in
     ];
 
     services.immich = {
-      enable = true;
+      enable = false;
       host = "0.0.0.0";
       port = 2283;
       mediaLocation = "/srv/immich/library";
@@ -106,8 +114,14 @@ in
     systemd.services.litellm = {
       description = "Authenticated OpenAI-compatible proxy for local Ollama";
       wantedBy = [ "multi-user.target" ];
-      after = [ "network-online.target" "ollama.service" ];
-      wants = [ "network-online.target" "ollama.service" ];
+      after = [
+        "network-online.target"
+        "ollama.service"
+      ];
+      wants = [
+        "network-online.target"
+        "ollama.service"
+      ];
       unitConfig.ConditionPathExists = "/etc/litellm/litellm.env";
       serviceConfig = {
         User = "litellm";
