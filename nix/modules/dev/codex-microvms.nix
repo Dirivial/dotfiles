@@ -275,18 +275,38 @@ in
       in
       lib.nameValuePair "microvm-virtiofsd@${name}" {
         preStart = lib.mkBefore ''
+          sync_auth_from_host() {
+            local host_auth="$1"
+            local vm_auth="$2"
+            local host_refresh
+            local vm_refresh
+
+            [ -e "$host_auth" ] || return 0
+
+            if [ -e "$vm_auth" ]; then
+              host_refresh="$(${lib.getExe pkgs.jq} -r '.last_refresh | select(type == "string")' "$host_auth" 2>/dev/null || true)"
+              vm_refresh="$(${lib.getExe pkgs.jq} -r '.last_refresh | select(type == "string")' "$vm_auth" 2>/dev/null || true)"
+
+              # Codex writes RFC 3339 UTC timestamps, so lexical ordering
+              # identifies which file contains the latest refresh token.
+              [ -n "$host_refresh" ] || return 0
+              if [ -n "$vm_refresh" ]; then
+                [[ "$host_refresh" > "$vm_refresh" ]] || return 0
+              fi
+            fi
+
+            install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} "$host_auth" "$vm_auth"
+          }
+
           install -d -m 0700 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.codexStateDirectory}
           install -d -m 0755 -o ${toString cfg.uid} -g ${toString cfg.gid} ${vm.workspace}
-          # The VM cannot complete the browser login flow itself. Re-seed its
-          # file-backed credentials from the host at every VM start so it does
-          # not retain a refresh token that the host has already rotated.
-          if [ -e ${cfg.hostCodexDirectory}/auth.json ]; then
-            install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.hostCodexDirectory}/auth.json ${cfg.codexStateDirectory}/auth.json
-          fi
+          # The VM cannot complete the browser login flow itself. Seed missing
+          # credentials from the host, but never replace a token that the VM
+          # refreshed more recently. The VM state directory is host-backed and
+          # already survives VM and host restarts.
+          sync_auth_from_host ${lib.escapeShellArg "${cfg.hostCodexDirectory}/auth.json"} ${lib.escapeShellArg "${cfg.codexStateDirectory}/auth.json"}
           install -d -m 0700 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.codexStateDirectory}/accounts/work
-          if [ -e /home/${cfg.userName}/.codex-work/auth.json ]; then
-            install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} /home/${cfg.userName}/.codex-work/auth.json ${cfg.codexStateDirectory}/accounts/work/auth.json
-          fi
+          sync_auth_from_host ${lib.escapeShellArg "/home/${cfg.userName}/.codex-work/auth.json"} ${lib.escapeShellArg "${cfg.codexStateDirectory}/accounts/work/auth.json"}
           if [ -e ${cfg.hostCodexDirectory}/config.toml ] && [ ! -e ${cfg.codexStateDirectory}/config.toml ]; then
             install -m 0600 -o ${toString cfg.uid} -g ${toString cfg.gid} ${cfg.hostCodexDirectory}/config.toml ${cfg.codexStateDirectory}/config.toml
           fi

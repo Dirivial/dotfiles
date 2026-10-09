@@ -46,6 +46,8 @@ between Codex accounts without re-login loops.
 Inside the Codex microVM, `personal` stays on the mounted `~/.codex` state and
 `work` lives under `~/.codex/accounts/work`, so switching accounts does not
 change the VM mount source. Because the VM cannot complete the browser login
-flow, its account credentials are refreshed from the host each time it starts.
+flow, missing account credentials are seeded from the host when it starts. If
+both the host and VM have credentials, the host copy is used only when its
+`last_refresh` timestamp is newer; otherwise the persistent VM copy is kept.
 Use a given account in either the host or the VM at one time, not both: refresh
 tokens rotate when used.
