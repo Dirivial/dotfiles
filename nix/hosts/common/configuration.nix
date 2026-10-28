@@ -113,6 +113,12 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = false;
 
+  qt = {
+    enable = true;
+    platformTheme = "kde";
+    style = "breeze";
+  };
+
   services.printing = {
     enable = true;
     drivers = with pkgs; [
