@@ -82,6 +82,14 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Provide 2 GiB of disk-backed swap for memory pressure.
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 2048;
+    }
+  ];
+
   networking.hostName = "alkade"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
