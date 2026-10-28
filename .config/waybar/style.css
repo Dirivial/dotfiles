@@ -207,6 +207,8 @@ window#waybar {
 
 #clock,
 #tray,
+#cpu,
+#memory,
 #custom-packages,
 #custom-colorpicker,
 #idle_inhibitor,

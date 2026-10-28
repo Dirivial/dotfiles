@@ -2,7 +2,7 @@
   "layer": "top", "position": "top",
   "modules-left": ["custom/logo", "clock"], //["custom/logo",  "disk", "memory", "cpu", "temperature" ],
   "modules-center": ["hyprland/workspaces"],
-  "modules-right": ["tray",  "custom/packages", "custom/colorpicker", "pulseaudio", "network",  "battery" ],
+  "modules-right": ["tray", "cpu", "memory", "custom/packages", "custom/colorpicker", "pulseaudio", "network",  "battery" ],
   "reload_style_on_change":true,
 
   "custom/logo": {
@@ -104,14 +104,18 @@
 
   "cpu": {
     "interval": 1,
-    "format": "  {usage}%",
-    "min-length": 6,
-    "max-length": 6,
+    "format": "CPU {usage}%",
+    "min-length": 8,
+    "max-length": 8,
     "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
   },
 
   "memory": {
-    "format": "  {percentage}%"
+    "interval": 1,
+    "format": "RAM {percentage}%",
+    "min-length": 8,
+    "max-length": 8,
+    "tooltip-format": "RAM: {used:0.1f} / {total:0.1f} GiB"
   },
 
   "hyprland/window": {
