@@ -29,7 +29,7 @@
     bitwarden-desktop
     bmaptool
     brightnessctl
-    codex
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.codex
     cursor-clip
     gimp
     google-chrome

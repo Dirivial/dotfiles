@@ -91,6 +91,7 @@ let
           inherit name;
           authorizedKeys = cfg.authorizedKeys;
           bridgeGateway = cfg.bridgeAddress;
+          codexPackage = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.codex;
           codexStateDirectory = cfg.codexStateDirectory;
           hostName = name;
           hypervisor = cfg.hypervisor;

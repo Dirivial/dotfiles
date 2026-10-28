@@ -1,6 +1,7 @@
 {
   authorizedKeys,
   bridgeGateway,
+  codexPackage,
   codexStateDirectory,
   extraPackages,
   extraShellInit,
@@ -51,7 +52,7 @@ let
       export CODEX_HOME
     fi
 
-    exec ${pkgs.codex}/bin/codex --dangerously-bypass-approvals-and-sandbox -c 'cli_auth_credentials_store="file"' "$@"
+    exec ${codexPackage}/bin/codex --dangerously-bypass-approvals-and-sandbox -c 'cli_auth_credentials_store="file"' "$@"
   '';
   codexPersonal = pkgs.writeShellScriptBin "codex-personal" ''
     ${codexAccountEnv}
