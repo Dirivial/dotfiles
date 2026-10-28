@@ -33,6 +33,7 @@
     cursor-clip
     gimp
     google-chrome
+    haruna
     hyprpicker
     hyprshot
     hyprsunset
@@ -48,6 +49,28 @@
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.vesktop
     wl-clipboard
   ];
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = lib.genAttrs [
+      "video/mp2t"
+      "video/mp4"
+      "video/mpeg"
+      "video/ogg"
+      "video/quicktime"
+      "video/vnd.avi"
+      "video/webm"
+      "video/x-matroska"
+      "video/x-ms-wmv"
+    ] (_: [ "org.kde.haruna.desktop" ]);
+  };
+
+  # Keep Haruna's playback history and GUI settings writable.
+  home.activation.harunaTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    run ${lib.getExe' pkgs.kdePackages.kconfig "kwriteconfig6"} \
+      --file ${lib.escapeShellArg "${config.xdg.configHome}/haruna/haruna.conf"} \
+      --group General --key ColorScheme "Catppuccin Mocha Blue"
+  '';
 
   xdg.configFile."whisper-dictation/config.yaml".text = ''
     hotkey:
