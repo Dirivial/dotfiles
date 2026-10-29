@@ -160,6 +160,17 @@ in
     "flakes"
   ];
 
+  # Guest garbage collection can hide host store paths with overlay whiteouts.
+  # A later host update may need those paths to run activation. Remove only
+  # top-level whiteouts before mounting the store, preserving guest packages.
+  boot.initrd.systemd.services.rw-sysroot-nix-store = {
+    serviceConfig.RemainAfterExit = true;
+    postStart = ''
+      ${pkgs.findutils}/bin/find /sysroot/var/lib/nix-rw-store/store \
+        -mindepth 1 -maxdepth 1 -type c -delete
+    '';
+  };
+
   system.stateVersion = stateVersion;
   systemd.network.enable = true;
   systemd.network.networks."10-microvm" = {
