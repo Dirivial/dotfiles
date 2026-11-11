@@ -1,6 +1,14 @@
 { pkgs, ... }:
 
 let
+  catppuccinGtk = {
+    name = "catppuccin-mocha-blue-standard";
+    package = pkgs.catppuccin-gtk.override {
+      accents = [ "blue" ];
+      variant = "mocha";
+      size = "standard";
+    };
+  };
   catppuccinYazi = pkgs.fetchFromGitHub {
     owner = "catppuccin";
     repo = "yazi";
@@ -12,6 +20,14 @@ in
   home.packages = with pkgs; [
     yazi
   ];
+
+  gtk = {
+    enable = true;
+    colorScheme = "dark";
+    theme = catppuccinGtk;
+    # GTK 4 needs its own CSS import, which Home Manager generates here.
+    gtk4.theme = catppuccinGtk;
+  };
 
   xdg.configFile."kdeglobals".text = ''
     [General]
