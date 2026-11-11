@@ -139,6 +139,15 @@ in
 
   services.ssh-agent.enable = true;
 
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    settings."codex.microvm" = {
+      User = "alkade";
+      ForwardAgent = true;
+    };
+  };
+
   # DE
   services.awww.enable = true;
 
