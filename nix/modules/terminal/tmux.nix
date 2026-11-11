@@ -19,14 +19,15 @@
           set -g @resurrect-capture-pane-contents 'on'
         '';
       }
+      minimal-tmux-status
+      # Continuum must load after the theme to preserve its autosave hook.
       {
         plugin = continuum;
         extraConfig = ''
-          set -g @continuum-save-interval '15'
+          set -g @continuum-save-interval '10'
           set -g @continuum-restore 'on'
         '';
       }
-      minimal-tmux-status
     ];
 
     extraConfig = ''
