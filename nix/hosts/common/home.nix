@@ -5,6 +5,28 @@
   inputs,
   ...
 }:
+let
+  chromeLauncher = pkgs.writeShellScriptBin "google-chrome" ''
+    exec ${pkgs.systemd}/bin/systemd-run --user --scope --collect --quiet \
+      --slice=app-chrome.slice --expand-environment=no \
+      -- ${pkgs.google-chrome}/bin/google-chrome-stable "$@"
+  '';
+  limitedChrome = pkgs.symlinkJoin {
+    inherit (pkgs.google-chrome) name meta;
+    paths = [ pkgs.google-chrome ];
+    postBuild = ''
+      ln -sf ${chromeLauncher}/bin/google-chrome "$out/bin/google-chrome"
+      ln -sf ${chromeLauncher}/bin/google-chrome "$out/bin/google-chrome-stable"
+
+      # Desktop entries use absolute paths, including new-window actions.
+      for desktop in "$out"/share/applications/*.desktop; do
+        substitute "$desktop" "$desktop.tmp" \
+          --replace-fail "${pkgs.google-chrome}/bin/" "$out/bin/"
+        mv "$desktop.tmp" "$desktop"
+      done
+    '';
+  };
+in
 {
 
   imports = [
@@ -32,7 +54,7 @@
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.codex
     cursor-clip
     gimp
-    google-chrome
+    limitedChrome
     haruna
     hyprpicker
     hyprshot
@@ -49,6 +71,16 @@
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.vesktop
     wl-clipboard
   ];
+
+  # All Chrome launch scopes share one budget, including separate profiles.
+  systemd.user.slices.app-chrome = {
+    Unit.Description = "Google Chrome memory limits";
+    Slice = {
+      MemoryHigh = "6G";
+      MemoryMax = "8G";
+      MemorySwapMax = "1G";
+    };
+  };
 
   xdg.mimeApps = {
     enable = true;
