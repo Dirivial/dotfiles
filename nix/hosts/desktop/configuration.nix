@@ -17,6 +17,12 @@
 
   alkade.desktopHomelab.enable = true;
 
+  fileSystems."/mnt/linuxdata" = {
+    device = "/dev/disk/by-uuid/ae3a6959-f9c0-421c-89ce-fdb6e7b70307";
+    fsType = "ext4";
+    options = [ "nofail" ];
+  };
+
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   nix.settings.extra-platforms = [
