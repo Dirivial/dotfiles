@@ -74,6 +74,22 @@
         "type": "indirect"
       }
     },
+    "nixpkgs-codex": {
+      "locked": {
+        "lastModified": 1794403432,
+        "narHash": "sha256-UdESajjgHo1s8UtC9RJ9R0OJ/LjOofI/jZ4ggLHC/Lk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7b105fcf87e8b800412cb56b7bc9138a9dadb68a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1792210252,
@@ -93,6 +109,7 @@
         "home-manager": "home-manager",
         "microvm": "microvm",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-codex": "nixpkgs-codex",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "whisper-dictation": "whisper-dictation"
       }
