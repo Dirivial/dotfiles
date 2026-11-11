@@ -8,7 +8,7 @@ hl.bind(mainMod .. " + F", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + M", hl.dsp.window.fullscreen({ mode = "maximized" }))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/grimshot.sh"))
+hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/hyprshot-menu.sh"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/hyprsunset.sh"))
 hl.bind(mainMod .. " + period", hl.dsp.exec_cmd("~/.config/hypr/hyprland/scripts/emoji-selector.sh"))
 -- whisper-dictation reads this key directly from evdev; consume it here so

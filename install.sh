@@ -60,6 +60,7 @@ DOTFILES=(
     ".config/hypr/hyprland/per-device/laptop.lua"
 
     ".config/hypr/hyprland/scripts/grimshot.sh"
+    ".config/hypr/hyprland/scripts/hyprshot-menu.sh"
     ".config/hypr/hyprland/scripts/hyprsunset.sh"
     ".config/hypr/hyprland/scripts/emoji-selector.sh"
 
