@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   codexAccount = pkgs.writeShellApplication {
@@ -10,6 +15,7 @@ in
 {
   home.packages = with pkgs; [
     codexAccount
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.bootdev-cli
     clang-tools
     commitizen
     cpplint
@@ -18,6 +24,7 @@ in
     gcc
     gh
     #graphite-cli
+    go
     gofumpt
     golangci-lint
     gopls
